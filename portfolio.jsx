@@ -390,8 +390,26 @@ function ServiceCard({ n, title, desc, tags, delay }){
 }
 
 /* ---------- BROWSER FRAME (live iframe in modal) ---------- */
-function BrowserFrame({ url, title }){
-  const [loaded, setLoaded] = useState(false);
+function BrowserFrame({ url, title, fallbackSrc }){
+  const [status, setStatus] = useState('loading'); // loading | ok | error
+  const iframeRef = useRef(null);
+
+  useEffect(()=>{
+    // If iframe loads but shows an error page (connection refused), the
+    // onLoad still fires. Use a timeout: if load hasn't fired in 6s, fallback.
+    const t = setTimeout(()=>{ if(status==='loading') setStatus('error'); }, 6000);
+    return ()=>clearTimeout(t);
+  },[]);
+
+  const handleLoad = ()=>{
+    try {
+      // If we can access contentDocument it loaded something real
+      const doc = iframeRef.current && iframeRef.current.contentDocument;
+      if(doc && doc.title === '') { setStatus('error'); return; }
+    } catch {}
+    setStatus('ok');
+  };
+
   return (
     <div style={{ borderRadius:14, overflow:'hidden', border:'1px solid var(--line)', marginBottom:32 }}>
       {/* Chrome bar */}
@@ -401,8 +419,8 @@ function BrowserFrame({ url, title }){
         borderBottom:'1px solid var(--line)',
       }}>
         <div style={{ display:'flex', gap:6 }}>
-          {['#3a3a3a','#3a3a3a','#3a3a3a'].map((c,i)=>(
-            <div key={i} style={{ width:10, height:10, borderRadius:99, background:c }}></div>
+          {[0,1,2].map(i=>(
+            <div key={i} style={{ width:10, height:10, borderRadius:99, background:'#3a3a3a' }}></div>
           ))}
         </div>
         <div style={{
@@ -421,25 +439,35 @@ function BrowserFrame({ url, title }){
           onMouseLeave={e=>e.currentTarget.style.color='var(--fg-mute)'}
         >↗ abrir</a>
       </div>
-      {/* iframe */}
-      <div style={{ position:'relative', height:420 }}>
-        {!loaded && (
+
+      <div style={{ position:'relative', height:420, background:'#0d0c0b' }}>
+        {/* loading spinner */}
+        {status==='loading' && (
           <div style={{
             position:'absolute', inset:0, display:'flex', alignItems:'center',
-            justifyContent:'center', background:'#111010', color:'var(--fg-mute)',
-            fontSize:13, gap:10,
+            justifyContent:'center', color:'var(--fg-mute)', fontSize:13, gap:10, zIndex:2,
           }}>
             <span style={{ width:16, height:16, borderRadius:99, border:'2px solid var(--fg-mute)', borderTopColor:'var(--accent)', display:'inline-block', animation:'spin 0.8s linear infinite' }}></span>
             Carregando...
           </div>
         )}
+
+        {/* fallback SVG when iframe fails */}
+        {status==='error' && fallbackSrc && (
+          <img src={fallbackSrc} alt={title} style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
+        )}
+
+        {/* iframe — hidden on error so fallback shows */}
         <iframe
+          ref={iframeRef}
           src={url}
           title={title}
-          onLoad={()=>setLoaded(true)}
+          onLoad={handleLoad}
           style={{
             width:'100%', height:420, border:'none', display:'block',
             background:'#0d0c0b',
+            opacity: status==='ok' ? 1 : 0,
+            position: status==='error' ? 'absolute' : 'relative',
           }}
         />
       </div>
@@ -526,7 +554,7 @@ function ProjectModal({ project, onClose }){
 
         {/* live preview or image slot */}
         {project.liveUrl ? (
-          <BrowserFrame url={project.liveUrl} title={project.title} />
+          <BrowserFrame url={project.liveUrl} title={project.title} fallbackSrc={project.preview} />
         ) : project.slot && (
           <div style={{ borderRadius:14, overflow:'hidden', marginBottom:32, height:340 }}>
             <image-slot
