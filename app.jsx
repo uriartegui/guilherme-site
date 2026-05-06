@@ -1,0 +1,170 @@
+/* App shell — orchestrates portfolio + tweaks */
+const { useState, useEffect, useRef } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accent": "#F59E0B",
+  "headingScale": "cinematic",
+  "bgTone": "warm",
+  "motion": true,
+  "fontPair": "jakarta"
+}/*EDITMODE-END*/;
+
+const ACCENT_OPTIONS = ['#F59E0B', '#EA580C', '#FB923C', '#FFB454'];
+const BG_TONES = {
+  warm:    { '--bg':'#0A0908', '--bg-2':'#121110', '--bg-3':'#1A1817', '--line':'#232120', '--line-2':'#2E2C2A' },
+  neutral: { '--bg':'#0B0B0C', '--bg-2':'#131315', '--bg-3':'#1B1B1E', '--line':'#222226', '--line-2':'#2C2C30' },
+  ink:     { '--bg':'#080806', '--bg-2':'#0F0E0C', '--bg-3':'#171513', '--line':'#1F1D1A', '--line-2':'#2A2725' },
+};
+const FONT_PAIRS = {
+  jakarta: { sans: "'Plus Jakarta Sans', system-ui, sans-serif" },
+  inter:   { sans: "'Inter Tight', 'Inter', system-ui, sans-serif" },
+  serif:   { sans: "'Instrument Serif', 'Plus Jakarta Sans', serif" },
+};
+
+function applyTweaks(t){
+  const root = document.documentElement;
+  root.style.setProperty('--accent', t.accent);
+  // derive a darker accent-2
+  root.style.setProperty('--accent-2', t.accent === '#F59E0B' ? '#EA580C' : t.accent);
+  // bg
+  const tone = BG_TONES[t.bgTone] || BG_TONES.warm;
+  Object.entries(tone).forEach(([k,v])=> root.style.setProperty(k,v));
+  // font
+  const pair = FONT_PAIRS[t.fontPair] || FONT_PAIRS.jakarta;
+  document.body.style.fontFamily = pair.sans;
+  // motion
+  document.body.classList.toggle('no-motion', !t.motion);
+  // heading scale handled via class
+  document.body.classList.toggle('scale-restrained', t.headingScale === 'restrained');
+}
+
+function injectFonts(pair){
+  const id = `font-${pair}`;
+  if(document.getElementById(id)) return;
+  const map = {
+    jakarta: 'Plus+Jakarta+Sans:wght@300;400;500;600;700;800',
+    inter:   'Inter+Tight:wght@300;400;500;600;700;800',
+    serif:   'Instrument+Serif:ital,wght@0,400;1,400',
+  };
+  if(!map[pair]) return;
+  const link = document.createElement('link');
+  link.id = id; link.rel = 'stylesheet';
+  link.href = `https://fonts.googleapis.com/css2?family=${map[pair]}&display=swap`;
+  document.head.appendChild(link);
+}
+
+function App(){
+  const [tweaks, setTweak] = window.useTweaks ? window.useTweaks(TWEAK_DEFAULTS) : [TWEAK_DEFAULTS, ()=>{}];
+  const formRef = useRef(null);
+
+  useEffect(()=>{
+    applyTweaks(tweaks);
+    injectFonts(tweaks.fontPair);
+  },[tweaks]);
+
+  // restrained scale via injected style
+  useEffect(()=>{
+    let style = document.getElementById('__scale_style');
+    if(!style){ style = document.createElement('style'); style.id='__scale_style'; document.head.appendChild(style); }
+    style.textContent = tweaks.headingScale === 'restrained' ? `
+      h1 { font-size: clamp(44px, 6.4vw, 88px) !important; }
+      h2 { font-size: clamp(32px, 3.8vw, 52px) !important; }
+      #contact h2 { font-size: clamp(48px, 8vw, 110px) !important; }
+    ` : '';
+  },[tweaks.headingScale]);
+
+  // Reveal-on-scroll observer (re-runs as new sections mount)
+  useEffect(()=>{
+    if(!tweaks.motion) {
+      document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+      return;
+    }
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    },{ threshold:.12, rootMargin:'0px 0px -6% 0px' });
+    const all = document.querySelectorAll('.reveal');
+    all.forEach(el=>io.observe(el));
+    return ()=> io.disconnect();
+  },[tweaks.motion]);
+
+  const goContact = ()=> {
+    const el = document.getElementById('contact');
+    if(el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+  };
+
+  return (
+    <>
+      <Nav onContact={goContact} />
+      <main>
+        <Hero />
+        <About />
+        <Services />
+        <Projects />
+        <Skills />
+        <Contact formRef={formRef} />
+      </main>
+      <Footer />
+
+      <PortfolioTweaks tweaks={tweaks} setTweak={setTweak} />
+    </>
+  );
+}
+
+function PortfolioTweaks({ tweaks, setTweak }){
+  if(!window.TweaksPanel) return null;
+  const { TweaksPanel, TweakSection, TweakColor, TweakRadio, TweakToggle, TweakSelect } = window;
+  return (
+    <TweaksPanel title="Tweaks">
+      <TweakSection title="Cor de destaque">
+        <TweakColor
+          value={tweaks.accent}
+          onChange={(v)=>setTweak('accent', v)}
+          options={ACCENT_OPTIONS}
+        />
+      </TweakSection>
+      <TweakSection title="Fundo">
+        <TweakRadio
+          value={tweaks.bgTone}
+          onChange={(v)=>setTweak('bgTone', v)}
+          options={[
+            { value:'warm', label:'Quente' },
+            { value:'neutral', label:'Neutro' },
+            { value:'ink', label:'Tinta' },
+          ]}
+        />
+      </TweakSection>
+      <TweakSection title="Escala dos títulos">
+        <TweakRadio
+          value={tweaks.headingScale}
+          onChange={(v)=>setTweak('headingScale', v)}
+          options={[
+            { value:'cinematic', label:'Cinematográfica' },
+            { value:'restrained', label:'Contida' },
+          ]}
+        />
+      </TweakSection>
+      <TweakSection title="Tipografia">
+        <TweakSelect
+          value={tweaks.fontPair}
+          onChange={(v)=>setTweak('fontPair', v)}
+          options={[
+            { value:'jakarta', label:'Plus Jakarta (padrão)' },
+            { value:'inter', label:'Inter Tight' },
+            { value:'serif', label:'Instrument Serif' },
+          ]}
+        />
+      </TweakSection>
+      <TweakSection title="Movimento">
+        <TweakToggle
+          value={tweaks.motion}
+          onChange={(v)=>setTweak('motion', v)}
+          label="Animações ativadas"
+        />
+      </TweakSection>
+    </TweaksPanel>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
