@@ -458,7 +458,18 @@ function ProjectModal({ project, onClose }){
         </h3>
         <p style={{ fontSize:16, color:'var(--fg-dim)', marginBottom: project.desc ? 20 : 32, lineHeight:1.5 }}>{project.subtitle}</p>
         {project.desc && (
-          <p style={{ fontSize:15, color:'var(--fg-mute)', lineHeight:1.7, marginBottom:32, maxWidth:'58ch' }}>{project.desc}</p>
+          <p style={{ fontSize:15, color:'var(--fg-mute)', lineHeight:1.7, marginBottom: project.features ? 24 : 32, maxWidth:'58ch' }}>{project.desc}</p>
+        )}
+
+        {project.features && (
+          <ul style={{ listStyle:'none', display:'flex', flexDirection:'column', gap:10, marginBottom:32 }}>
+            {project.features.map((f,i)=>(
+              <li key={i} style={{ display:'flex', alignItems:'flex-start', gap:10, fontSize:14, color:'var(--fg-dim)', lineHeight:1.5 }}>
+                <span style={{ marginTop:4, width:6, height:6, borderRadius:99, background:accentColor, flexShrink:0 }}></span>
+                {f}
+              </li>
+            ))}
+          </ul>
         )}
 
         {/* github button */}
@@ -512,11 +523,18 @@ function Projects(){
           <ProjectCard
             span="span 4 / span 4" rows="span 2"
             tone="amber" featured
-            year="2025" stack="Next.js · Supabase · Stripe"
-            title="Qualyra" subtitle="Plataforma SaaS para clínicas e profissionais de saúde"
-            desc="Sistema completo de gestão clínica com prontuário eletrônico, agendamento e financeiro. Do zero ao produto em produção."
+            year="2025" stack="Vite · Spring Boot · PostgreSQL"
+            title="Qualyra" subtitle="SaaS de gestão da qualidade — da planilha ao processo rastreável"
+            desc="Centraliza não-conformidades com fluxo estruturado, responsabilidades claras e trilha de auditoria completa. Multi-tenant, controle de acesso por papéis e dashboards em tempo real."
             link="https://github.com/uriartegui/qualyra"
             slot="qualyra"
+            features={[
+              'Fluxo OPEN → IN_PROGRESS → RESOLVED → CLOSED',
+              'Controle de acesso por papéis (RBAC)',
+              'Isolamento multi-tenant seguro',
+              'Trilha de auditoria para conformidade',
+              'Dashboards de visibilidade em tempo real',
+            ]}
             onOpen={setActive}
           />
           <ProjectCard
@@ -568,7 +586,7 @@ function Projects(){
   );
 }
 
-function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, featured, slot, link, onOpen }){
+function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, features, featured, slot, link, onOpen }){
   const [hover,setHover] = useState(false);
   const tones = {
     'amber':       { bg:'#1F1408', border:'#3a2310', accent:'var(--accent)' },
@@ -579,7 +597,7 @@ function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, fea
   const c = tones[tone] || tones.ink;
 
   const handleClick = ()=>{
-    if(onOpen) onOpen({ tone, year, stack, title, subtitle, desc, slot, link });
+    if(onOpen) onOpen({ tone, year, stack, title, subtitle, desc, features, slot, link });
   };
 
   return (
