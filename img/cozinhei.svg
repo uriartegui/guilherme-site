@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="#0d0c0b"/>
+
+  <!-- Top bar -->
+  <rect width="800" height="52" fill="#111010"/>
+  <rect y="52" width="800" height="1" fill="#1e1d1b"/>
+  <text x="24" y="32" fill="#e5e5e0" font-size="16" font-weight="700" font-family="system-ui">🍳 Cozinhei</text>
+  <rect x="620" y="15" width="140" height="24" rx="6" fill="#1e1d1b"/>
+  <text x="690" y="31" text-anchor="middle" fill="#6b6965" font-size="11" font-family="system-ui">O que tem na geladeira?</text>
+
+  <!-- Left panel: input -->
+  <rect x="0" y="53" width="300" height="447" fill="#111010"/>
+  <rect x="300" y="53" width="1" height="447" fill="#1e1d1b"/>
+
+  <text x="20" y="86" fill="#a8a6a0" font-size="11" font-family="system-ui" letter-spacing="0.8">INGREDIENTES</text>
+  <!-- Ingredient chips -->
+  <rect x="20" y="96" width="64" height="24" rx="12" fill="rgba(245,158,11,0.15)" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+  <text x="52" y="112" text-anchor="middle" fill="#f59e0b" font-size="11" font-family="system-ui">frango</text>
+  <rect x="92" y="96" width="60" height="24" rx="12" fill="rgba(245,158,11,0.15)" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+  <text x="122" y="112" text-anchor="middle" fill="#f59e0b" font-size="11" font-family="system-ui">alho</text>
+  <rect x="160" y="96" width="68" height="24" rx="12" fill="rgba(245,158,11,0.15)" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+  <text x="194" y="112" text-anchor="middle" fill="#f59e0b" font-size="11" font-family="system-ui">limão</text>
+  <rect x="20" y="128" width="72" height="24" rx="12" fill="rgba(245,158,11,0.15)" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+  <text x="56" y="144" text-anchor="middle" fill="#f59e0b" font-size="11" font-family="system-ui">azeite</text>
+  <rect x="100" y="128" width="78" height="24" rx="12" fill="rgba(245,158,11,0.15)" stroke="rgba(245,158,11,0.3)" stroke-width="1"/>
+  <text x="139" y="144" text-anchor="middle" fill="#f59e0b" font-size="11" font-family="system-ui">tomilho</text>
+  <rect x="186" y="128" width="60" height="24" rx="12" fill="#1e1d1b" stroke="#2e2c2a" stroke-width="1"/>
+  <text x="216" y="144" text-anchor="middle" fill="#6b6965" font-size="11" font-family="system-ui">+ add</text>
+
+  <text x="20" y="178" fill="#a8a6a0" font-size="11" font-family="system-ui" letter-spacing="0.8">PREFERÊNCIAS</text>
+  <rect x="20" y="188" width="260" height="36" rx="8" fill="#1a1917" stroke="#2e2c2a" stroke-width="1"/>
+  <text x="40" y="210" fill="#6b6965" font-size="12" font-family="system-ui">Tempo máximo: 30 minutos</text>
+  <rect x="20" y="232" width="260" height="36" rx="8" fill="#1a1917" stroke="#2e2c2a" stroke-width="1"/>
+  <text x="40" y="254" fill="#6b6965" font-size="12" font-family="system-ui">Porções: 2 pessoas</text>
+  <rect x="20" y="276" width="260" height="36" rx="8" fill="#1a1917" stroke="#2e2c2a" stroke-width="1"/>
+  <text x="40" y="298" fill="#6b6965" font-size="12" font-family="system-ui">Dificuldade: fácil</text>
+
+  <!-- Generate button -->
+  <rect x="20" y="432" width="260" height="44" rx="10" fill="#f59e0b"/>
+  <text x="150" y="459" text-anchor="middle" fill="#0a0908" font-size="14" font-weight="700" font-family="system-ui">✨ Gerar receitas com IA</text>
+
+  <!-- Right panel: recipe cards -->
+  <text x="320" y="82" fill="#e5e5e0" font-size="14" font-weight="600" font-family="system-ui">3 receitas encontradas</text>
+  <text x="320" y="98" fill="#6b6965" font-size="11" font-family="system-ui">geradas por IA com seus ingredientes</text>
+
+  <!-- Recipe card 1 (active) -->
+  <rect x="316" y="110" width="460" height="140" rx="12" fill="#1a1917" stroke="#f59e0b" stroke-width="1.5"/>
+  <rect x="316" y="110" width="140" height="140" rx="12" fill="#232120"/>
+  <rect x="316" y="178" width="140" height="72" rx="0" fill="#232120"/>
+  <rect x="444" y="121" width="1" height="118" fill="#2e2c2a"/>
+  <!-- Food illustration placeholder -->
+  <circle cx="386" cy="180" r="38" fill="#2e2c2a"/>
+  <text x="386" y="188" text-anchor="middle" font-size="28">🍗</text>
+  <text x="456" y="136" fill="#e5e5e0" font-size="14" font-weight="600" font-family="system-ui">Frango ao limão siciliano</text>
+  <text x="456" y="154" fill="#6b6965" font-size="11" font-family="system-ui">25 min · Fácil · 2 porções</text>
+  <rect x="456" y="164" width="54" height="18" rx="4" fill="rgba(34,197,94,0.12)"/>
+  <text x="483" y="176" text-anchor="middle" fill="#22c55e" font-size="10" font-family="system-ui">5 ingredientes</text>
+  <text x="456" y="202" fill="#a8a6a0" font-size="11" font-family="system-ui">Clássico mediterrâneo com frango</text>
+  <text x="456" y="218" fill="#a8a6a0" font-size="11" font-family="system-ui">grelhado, alho e ervas frescas.</text>
+  <rect x="456" y="232" width="80" height="22" rx="6" fill="#f59e0b"/>
+  <text x="496" y="247" text-anchor="middle" fill="#0a0908" font-size="11" font-weight="600" font-family="system-ui">Ver receita →</text>
+
+  <!-- Recipe card 2 -->
+  <rect x="316" y="262" width="460" height="100" rx="12" fill="#141312" stroke="#1e1d1b" stroke-width="1"/>
+  <circle cx="366" cy="312" r="28" fill="#1e1d1b"/>
+  <text x="366" y="320" text-anchor="middle" font-size="22">🫙</text>
+  <text x="408" y="292" fill="#e5e5e0" font-size="13" font-weight="600" font-family="system-ui">Frango com alho confit</text>
+  <text x="408" y="310" fill="#6b6965" font-size="11" font-family="system-ui">40 min · Médio · 2 porções</text>
+  <text x="408" y="328" fill="#a8a6a0" font-size="11" font-family="system-ui">Técnica francesa com azeite e tomilho.</text>
+  <rect x="720" y="300" width="40" height="22" rx="6" fill="#1e1d1b"/>
+  <text x="740" y="314" text-anchor="middle" fill="#6b6965" font-size="11" font-family="system-ui">→</text>
+
+  <!-- Recipe card 3 -->
+  <rect x="316" y="374" width="460" height="100" rx="12" fill="#141312" stroke="#1e1d1b" stroke-width="1"/>
+  <circle cx="366" cy="424" r="28" fill="#1e1d1b"/>
+  <text x="366" y="432" text-anchor="middle" font-size="22">🥗</text>
+  <text x="408" y="404" fill="#e5e5e0" font-size="13" font-weight="600" font-family="system-ui">Salada quente de frango grelhado</text>
+  <text x="408" y="422" fill="#6b6965" font-size="11" font-family="system-ui">15 min · Fácil · 2 porções</text>
+  <text x="408" y="440" fill="#a8a6a0" font-size="11" font-family="system-ui">Leve, rápido e com o que você tem.</text>
+  <rect x="720" y="412" width="40" height="22" rx="6" fill="#1e1d1b"/>
+  <text x="740" y="426" text-anchor="middle" fill="#6b6965" font-size="11" font-family="system-ui">→</text>
+</svg>

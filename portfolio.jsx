@@ -437,6 +437,7 @@ function ProjectModal({ project, onClose }){
           <div style={{ borderRadius:14, overflow:'hidden', marginBottom:32, height:340 }}>
             <image-slot
               id={`proj-modal-${project.slot}`}
+              src={project.preview}
               placeholder={`screenshot: ${project.title}`}
               radius="0"
               style={{ width:'100%', height:'100%', display:'block' }}
@@ -528,6 +529,7 @@ function Projects(){
             desc="Centraliza não-conformidades com fluxo estruturado, responsabilidades claras e trilha de auditoria completa. Multi-tenant, controle de acesso por papéis e dashboards em tempo real."
             link="https://github.com/uriartegui/qualyra"
             slot="qualyra"
+            preview="img/qualyra.svg"
             features={[
               'Fluxo OPEN → IN_PROGRESS → RESOLVED → CLOSED',
               'Controle de acesso por papéis (RBAC)',
@@ -544,6 +546,7 @@ function Projects(){
             title="Cozinhei" subtitle="App de receitas geradas por IA"
             link="https://github.com/uriartegui/cozinhei"
             slot="cozinhei"
+            preview="img/cozinhei.svg"
             onOpen={setActive}
           />
           <ProjectCard
@@ -562,6 +565,7 @@ function Projects(){
             desc="Monitora avaliações em tempo real e sugere respostas com IA. Painel centralizado para múltiplas unidades."
             link="https://github.com/uriartegui/repution"
             slot="repution"
+            preview="img/repution.svg"
             onOpen={setActive}
           />
           <ProjectCard
@@ -586,7 +590,7 @@ function Projects(){
   );
 }
 
-function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, features, featured, slot, link, onOpen }){
+function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, features, featured, slot, preview, link, onOpen }){
   const [hover,setHover] = useState(false);
   const tones = {
     'amber':       { bg:'#1F1408', border:'#3a2310', accent:'var(--accent)' },
@@ -597,7 +601,7 @@ function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, fea
   const c = tones[tone] || tones.ink;
 
   const handleClick = ()=>{
-    if(onOpen) onOpen({ tone, year, stack, title, subtitle, desc, features, slot, link });
+    if(onOpen) onOpen({ tone, year, stack, title, subtitle, desc, features, slot, preview, link });
   };
 
   return (
@@ -632,7 +636,7 @@ function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, fea
           opacity: featured ? .9 : .55,
           pointerEvents:'none',
         }}>
-          <image-slot id={`proj-${slot}`} placeholder={`captura: ${title}`} radius="10" style={{ width:'100%', height:'100%', display:'block' }}></image-slot>
+          <image-slot id={`proj-${slot}`} src={preview} placeholder={`captura: ${title}`} radius="10" style={{ width:'100%', height:'100%', display:'block' }}></image-slot>
         </div>
       )}
 

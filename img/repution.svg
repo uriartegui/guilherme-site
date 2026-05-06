@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="#0d0c0b"/>
+
+  <!-- Top bar -->
+  <rect width="800" height="52" fill="#111010"/>
+  <rect y="52" width="800" height="1" fill="#1e1d1b"/>
+  <text x="24" y="33" fill="#e5e5e0" font-size="15" font-weight="700" font-family="system-ui">Repution</text>
+  <rect x="600" y="14" width="100" height="26" rx="6" fill="rgba(34,197,94,0.1)" stroke="rgba(34,197,94,0.25)" stroke-width="1"/>
+  <circle cx="616" cy="27" r="4" fill="#22c55e"/>
+  <text x="652" y="31" text-anchor="middle" fill="#22c55e" font-size="11" font-family="system-ui">ao vivo</text>
+  <rect x="716" y="14" width="64" height="26" rx="6" fill="#1e1d1b"/>
+  <text x="748" y="31" text-anchor="middle" fill="#a8a6a0" font-size="11" font-family="system-ui">+ Unidade</text>
+
+  <!-- Score hero -->
+  <rect x="16" y="68" width="200" height="160" rx="10" fill="#141312" stroke="#1e1d1b" stroke-width="1"/>
+  <text x="116" y="100" text-anchor="middle" fill="#6b6965" font-size="10" font-family="system-ui" letter-spacing="0.8">SCORE GERAL</text>
+  <text x="116" y="150" text-anchor="middle" fill="#f59e0b" font-size="52" font-weight="700" font-family="system-ui">4.7</text>
+  <!-- Stars -->
+  <text x="116" y="182" text-anchor="middle" fill="#f59e0b" font-size="18" font-family="system-ui">★★★★★</text>
+  <text x="116" y="214" text-anchor="middle" fill="#6b6965" font-size="11" font-family="system-ui">baseado em 312 avaliações</text>
+
+  <!-- Platform breakdown -->
+  <rect x="228" y="68" width="556" height="160" rx="10" fill="#141312" stroke="#1e1d1b" stroke-width="1"/>
+  <text x="248" y="96" fill="#6b6965" font-size="10" font-family="system-ui" letter-spacing="0.8">POR PLATAFORMA</text>
+  <!-- Google -->
+  <rect x="248" y="108" width="120" height="100" rx="8" fill="#1a1917"/>
+  <text x="308" y="130" text-anchor="middle" fill="#a8a6a0" font-size="11" font-family="system-ui">Google</text>
+  <text x="308" y="162" text-anchor="middle" fill="#e5e5e0" font-size="28" font-weight="700" font-family="system-ui">4.8</text>
+  <text x="308" y="184" text-anchor="middle" fill="#f59e0b" font-size="14">★★★★★</text>
+  <text x="308" y="200" text-anchor="middle" fill="#6b6965" font-size="10" font-family="system-ui">184 avaliações</text>
+  <!-- Facebook -->
+  <rect x="380" y="108" width="120" height="100" rx="8" fill="#1a1917"/>
+  <text x="440" y="130" text-anchor="middle" fill="#a8a6a0" font-size="11" font-family="system-ui">Facebook</text>
+  <text x="440" y="162" text-anchor="middle" fill="#e5e5e0" font-size="28" font-weight="700" font-family="system-ui">4.6</text>
+  <text x="440" y="184" text-anchor="middle" fill="#f59e0b" font-size="14">★★★★☆</text>
+  <text x="440" y="200" text-anchor="middle" fill="#6b6965" font-size="10" font-family="system-ui">98 avaliações</text>
+  <!-- iFood -->
+  <rect x="512" y="108" width="120" height="100" rx="8" fill="#1a1917"/>
+  <text x="572" y="130" text-anchor="middle" fill="#a8a6a0" font-size="11" font-family="system-ui">iFood</text>
+  <text x="572" y="162" text-anchor="middle" fill="#e5e5e0" font-size="28" font-weight="700" font-family="system-ui">4.5</text>
+  <text x="572" y="184" text-anchor="middle" fill="#f59e0b" font-size="14">★★★★☆</text>
+  <text x="572" y="200" text-anchor="middle" fill="#6b6965" font-size="10" font-family="system-ui">30 avaliações</text>
+  <!-- Trend -->
+  <rect x="644" y="108" width="120" height="100" rx="8" fill="rgba(34,197,94,0.06)" stroke="rgba(34,197,94,0.15)" stroke-width="1"/>
+  <text x="704" y="130" text-anchor="middle" fill="#6b6965" font-size="11" font-family="system-ui">Tendência</text>
+  <text x="704" y="165" text-anchor="middle" fill="#22c55e" font-size="32" font-weight="700" font-family="system-ui">↑</text>
+  <text x="704" y="190" text-anchor="middle" fill="#22c55e" font-size="13" font-weight="600" font-family="system-ui">+0.3</text>
+  <text x="704" y="206" text-anchor="middle" fill="#6b6965" font-size="10" font-family="system-ui">últimos 30 dias</text>
+
+  <!-- Recent reviews -->
+  <text x="16" y="258" fill="#a8a6a0" font-size="11" font-family="system-ui" letter-spacing="0.8">AVALIAÇÕES RECENTES</text>
+
+  <!-- Review 1 -->
+  <rect x="16" y="268" width="372" height="100" rx="10" fill="#141312" stroke="#1e1d1b" stroke-width="1"/>
+  <circle cx="40" cy="294" r="14" fill="#232120"/>
+  <text x="40" y="299" text-anchor="middle" fill="#a8a6a0" font-size="11" font-family="system-ui">M</text>
+  <text x="62" y="290" fill="#e5e5e0" font-size="12" font-weight="600" font-family="system-ui">Mariana Costa</text>
+  <text x="62" y="306" fill="#f59e0b" font-size="12">★★★★★</text>
+  <text x="300" y="290" fill="#6b6965" font-size="10" font-family="system-ui">Google · 2h atrás</text>
+  <text x="28" y="328" fill="#a8a6a0" font-size="12" font-family="system-ui">"Atendimento incrível, super recomendo!</text>
+  <text x="28" y="344" fill="#a8a6a0" font-size="12" font-family="system-ui">Voltarei com certeza."</text>
+  <!-- AI suggested reply -->
+  <rect x="28" y="354" width="340" height="1" fill="#1e1d1b"/>
+  <rect x="28" y="358" width="200" height="20" rx="4" fill="rgba(245,158,11,0.08)"/>
+  <text x="36" y="372" fill="#f59e0b" font-size="10" font-family="system-ui">✨ Resposta sugerida pela IA →</text>
+
+  <!-- Review 2 -->
+  <rect x="412" y="268" width="372" height="100" rx="10" fill="#141312" stroke="#1e1d1b" stroke-width="1"/>
+  <circle cx="436" cy="294" r="14" fill="#232120"/>
+  <text x="436" y="299" text-anchor="middle" fill="#a8a6a0" font-size="11" font-family="system-ui">R</text>
+  <text x="458" y="290" fill="#e5e5e0" font-size="12" font-weight="600" font-family="system-ui">Rafael Mendes</text>
+  <text x="458" y="306" fill="#f59e0b" font-size="12">★★★☆☆</text>
+  <text x="680" y="290" fill="#6b6965" font-size="10" font-family="system-ui">iFood · 5h atrás</text>
+  <text x="424" y="328" fill="#a8a6a0" font-size="12" font-family="system-ui">"Comida boa mas a entrega demorou</text>
+  <text x="424" y="344" fill="#a8a6a0" font-size="12" font-family="system-ui">mais do esperado."</text>
+  <rect x="424" y="354" width="340" height="1" fill="#1e1d1b"/>
+  <rect x="424" y="358" width="200" height="20" rx="4" fill="rgba(245,158,11,0.08)"/>
+  <text x="432" y="372" fill="#f59e0b" font-size="10" font-family="system-ui">✨ Resposta sugerida pela IA →</text>
+
+  <!-- Chart -->
+  <rect x="16" y="382" width="768" height="100" rx="10" fill="#141312" stroke="#1e1d1b" stroke-width="1"/>
+  <text x="36" y="406" fill="#6b6965" font-size="10" font-family="system-ui" letter-spacing="0.8">HISTÓRICO DE SCORE — 6 MESES</text>
+  <!-- Chart bars -->
+  <rect x="80"  y="440" width="24" height="24" rx="3" fill="rgba(245,158,11,0.3)"/>
+  <rect x="180" y="432" width="24" height="32" rx="3" fill="rgba(245,158,11,0.4)"/>
+  <rect x="280" y="424" width="24" height="40" rx="3" fill="rgba(245,158,11,0.5)"/>
+  <rect x="380" y="418" width="24" height="46" rx="3" fill="rgba(245,158,11,0.6)"/>
+  <rect x="480" y="412" width="24" height="52" rx="3" fill="rgba(245,158,11,0.75)"/>
+  <rect x="580" y="404" width="24" height="60" rx="3" fill="#f59e0b"/>
+  <rect x="680" y="408" width="24" height="56" rx="3" fill="rgba(245,158,11,0.85)"/>
+  <text x="92"  y="476" text-anchor="middle" fill="#6b6965" font-size="9" font-family="system-ui">Nov</text>
+  <text x="192" y="476" text-anchor="middle" fill="#6b6965" font-size="9" font-family="system-ui">Dez</text>
+  <text x="292" y="476" text-anchor="middle" fill="#6b6965" font-size="9" font-family="system-ui">Jan</text>
+  <text x="392" y="476" text-anchor="middle" fill="#6b6965" font-size="9" font-family="system-ui">Fev</text>
+  <text x="492" y="476" text-anchor="middle" fill="#6b6965" font-size="9" font-family="system-ui">Mar</text>
+  <text x="592" y="476" text-anchor="middle" fill="#f59e0b" font-size="9" font-family="system-ui">Abr</text>
+  <text x="692" y="476" text-anchor="middle" fill="#6b6965" font-size="9" font-family="system-ui">Mai</text>
+</svg>
