@@ -899,7 +899,7 @@ function SkillBar({ name, level }){
 
 /* ---------- CONTACT ---------- */
 function Contact({ formRef }){
-  const [state,setState] = useState({ name:'', email:'', message:'', budget:'' });
+  const [state,setState] = useState({ name:'', email:'', phone:'', message:'', budget:'' });
   const [errors,setErrors] = useState({});
   const [sent,setSent] = useState(false);
   const [sending,setSending] = useState(false);
@@ -922,13 +922,14 @@ function Contact({ formRef }){
         body: JSON.stringify({
           name: state.name,
           email: state.email,
+          phone: state.phone,
           budget: state.budget,
           message: state.message,
         }),
       });
       if(res.ok){ setSent(true); }
       else { alert('Erro ao enviar. Tente pelo email diretamente.'); }
-    } catch(_){
+    } catch(_) {
       alert('Erro de conexão. Tente pelo email diretamente.');
     } finally {
       setSending(false);
@@ -994,7 +995,7 @@ function Contact({ formRef }){
               <p style={{ color:'var(--fg-dim)', fontSize:16, lineHeight:1.55 }}>
                 Obrigado, {state.name.split(' ')[0]}. Te respondo no email <span style={{ color:'var(--fg)' }}>{state.email}</span> em até 24h úteis.
               </p>
-              <button onClick={()=>{ setSent(false); setState({ name:'', email:'', message:'', budget:'' }); }} className="mono" style={{ alignSelf:'flex-start', marginTop:14, fontSize:12, letterSpacing:'.08em', textTransform:'uppercase', color:'var(--fg-dim)', borderBottom:'1px solid var(--line-2)', paddingBottom:3 }}>
+              <button onClick={()=>{ setSent(false); setState({ name:'', email:'', phone:'', message:'', budget:'' }); }} className="mono" style={{ alignSelf:'flex-start', marginTop:14, fontSize:12, letterSpacing:'.08em', textTransform:'uppercase', color:'var(--fg-dim)', borderBottom:'1px solid var(--line-2)', paddingBottom:3 }}>
                 ← Enviar outra
               </button>
             </div>
@@ -1002,6 +1003,7 @@ function Contact({ formRef }){
             <form onSubmit={submit} style={{ display:'flex', flexDirection:'column', gap:0 }} noValidate>
               <Field label="Nome" id="name" value={state.name} onChange={update('name')} error={errors.name} placeholder="Como devo te chamar?" />
               <Field label="Email" id="email" type="email" value={state.email} onChange={update('email')} error={errors.email} placeholder="email@empresa.com" />
+              <Field label="WhatsApp" id="phone" type="tel" value={state.phone} onChange={update('phone')} placeholder="(00) 00000-0000 — opcional" />
               <BudgetSelect value={state.budget} onChange={(v)=>setState(s=>({...s, budget:v}))} />
               <Field label="Projeto" id="message" textarea value={state.message} onChange={update('message')} error={errors.message} placeholder="Conta um pouco do que você precisa construir." />
 
