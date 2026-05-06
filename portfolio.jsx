@@ -942,8 +942,8 @@ function Contact({ formRef }){
             </p>
             <ul style={{ listStyle:'none', display:'flex', flexDirection:'column', gap:18 }}>
               {[
-                ['Email','guiuriarte@gmail.com','mailto:guiuriarte@gmail.com'],
-                ['LinkedIn','/in/guilherme-uriarte','https://linkedin.com/in/guilherme-uriarte'],
+                ['Email','guiuriartedev@gmail.com','mailto:guiuriartedev@gmail.com'],
+                ['LinkedIn','/in/uriartegui19','https://www.linkedin.com/in/uriartegui19/'],
                 ['GitHub','github.com/uriartegui','https://github.com/uriartegui'],
                 ['Localização','Brasil · Remoto',null],
               ].map(([k,v,href])=>(
