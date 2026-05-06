@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="#0d0c0b"/>
+
+  <!-- Top bar -->
+  <rect width="800" height="46" fill="#111010"/>
+  <rect y="46" width="800" height="1" fill="#1e1d1b"/>
+  <text x="20" y="28" fill="#e5e5e0" font-size="14" font-weight="700" font-family="system-ui">Kanva</text>
+  <text x="80" y="28" fill="#6b6965" font-size="12" font-family="system-ui">Sprint #12</text>
+  <text x="170" y="28" fill="#6b6965" font-size="11" font-family="system-ui">7–21 mai · 7 tarefas</text>
+  <!-- Avatars -->
+  <circle cx="720" cy="23" r="11" fill="#6366f1"/>
+  <text x="720" y="27" text-anchor="middle" fill="white" font-size="8" font-weight="700" font-family="system-ui">GU</text>
+  <circle cx="744" cy="23" r="11" fill="#ec4899"/>
+  <text x="744" y="27" text-anchor="middle" fill="white" font-size="8" font-weight="700" font-family="system-ui">PM</text>
+  <circle cx="768" cy="23" r="11" fill="#f59e0b"/>
+  <text x="768" y="27" text-anchor="middle" fill="white" font-size="8" font-weight="700" font-family="system-ui">CB</text>
+
+  <!-- Column: A fazer -->
+  <rect x="12" y="55" width="254" height="436" rx="10" fill="#111010"/>
+  <rect x="12" y="55" width="254" height="38" rx="10" fill="#111010"/>
+  <rect x="12" y="79" width="254" height="14" fill="#111010"/>
+  <circle cx="30" cy="74" r="5" fill="#6b6965"/>
+  <text x="42" y="79" fill="#a8a6a0" font-size="11" font-weight="600" font-family="system-ui">A fazer</text>
+  <rect x="232" y="64" width="22" height="16" rx="8" fill="#1e1d1b"/>
+  <text x="243" y="75" text-anchor="middle" fill="#6b6965" font-size="9" font-family="system-ui">3</text>
+
+  <!-- Card 1 -->
+  <rect x="20" y="100" width="238" height="72" rx="8" fill="#1a1917" stroke="#1e1d1b" stroke-width="1"/>
+  <text x="30" y="118" fill="#e5e5e0" font-size="11" font-family="system-ui">Configurar CI/CD pipeline</text>
+  <rect x="30" y="126" width="44" height="14" rx="7" fill="#232120"/>
+  <text x="52" y="136" text-anchor="middle" fill="#6b6965" font-size="8" font-family="system-ui">DevOps</text>
+  <rect x="80" y="126" width="32" height="14" rx="7" fill="rgba(239,68,68,.12)"/>
+  <text x="96" y="136" text-anchor="middle" fill="#ef4444" font-size="8" font-family="system-ui">alta</text>
+  <circle cx="242" cy="133" r="10" fill="#6366f1"/>
+  <text x="242" y="137" text-anchor="middle" fill="white" font-size="7" font-weight="700" font-family="system-ui">GU</text>
+  <rect x="192" y="148" width="44" height="16" rx="5" fill="rgba(245,158,11,.08)" stroke="rgba(245,158,11,.2)" stroke-width="1"/>
+  <text x="214" y="159" text-anchor="middle" fill="#f59e0b" font-size="9" font-family="system-ui">mover →</text>
+
+  <!-- Card 2 -->
+  <rect x="20" y="180" width="238" height="72" rx="8" fill="#1a1917" stroke="#1e1d1b" stroke-width="1"/>
+  <text x="30" y="198" fill="#e5e5e0" font-size="11" font-family="system-ui">Design sistema de notificações</text>
+  <rect x="30" y="206" width="40" height="14" rx="7" fill="#232120"/>
+  <text x="50" y="216" text-anchor="middle" fill="#6b6965" font-size="8" font-family="system-ui">Design</text>
+  <rect x="76" y="206" width="36" height="14" rx="7" fill="rgba(245,158,11,.12)"/>
+  <text x="94" y="216" text-anchor="middle" fill="#f59e0b" font-size="8" font-family="system-ui">média</text>
+  <circle cx="242" cy="213" r="10" fill="#ec4899"/>
+  <text x="242" y="217" text-anchor="middle" fill="white" font-size="7" font-weight="700" font-family="system-ui">PM</text>
+  <rect x="192" y="228" width="44" height="16" rx="5" fill="rgba(245,158,11,.08)" stroke="rgba(245,158,11,.2)" stroke-width="1"/>
+  <text x="214" y="239" text-anchor="middle" fill="#f59e0b" font-size="9" font-family="system-ui">mover →</text>
+
+  <!-- Card 3 -->
+  <rect x="20" y="260" width="238" height="72" rx="8" fill="#1a1917" stroke="#1e1d1b" stroke-width="1"/>
+  <text x="30" y="278" fill="#e5e5e0" font-size="11" font-family="system-ui">Documentar endpoints da API</text>
+  <rect x="30" y="286" width="34" height="14" rx="7" fill="#232120"/>
+  <text x="47" y="296" text-anchor="middle" fill="#6b6965" font-size="8" font-family="system-ui">Docs</text>
+  <rect x="70" y="286" width="34" height="14" rx="7" fill="rgba(34,197,94,.12)"/>
+  <text x="87" y="296" text-anchor="middle" fill="#22c55e" font-size="8" font-family="system-ui">baixa</text>
+  <circle cx="242" cy="293" r="10" fill="#6366f1"/>
+  <text x="242" y="297" text-anchor="middle" fill="white" font-size="7" font-weight="700" font-family="system-ui">GU</text>
+  <rect x="192" y="308" width="44" height="16" rx="5" fill="rgba(245,158,11,.08)" stroke="rgba(245,158,11,.2)" stroke-width="1"/>
+  <text x="214" y="319" text-anchor="middle" fill="#f59e0b" font-size="9" font-family="system-ui">mover →</text>
+
+  <!-- + tarefa -->
+  <rect x="20" y="342" width="238" height="30" rx="7" fill="transparent" stroke="#1e1d1b" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="139" y="361" text-anchor="middle" fill="#6b6965" font-size="10" font-family="system-ui">+ tarefa</text>
+
+  <!-- Column: Em progresso -->
+  <rect x="274" y="55" width="254" height="436" rx="10" fill="#111010"/>
+  <rect x="274" y="79" width="254" height="14" fill="#111010"/>
+  <circle cx="292" cy="74" r="5" fill="#f59e0b"/>
+  <text x="304" y="79" fill="#a8a6a0" font-size="11" font-weight="600" font-family="system-ui">Em progresso</text>
+  <rect x="494" y="64" width="22" height="16" rx="8" fill="#1e1d1b"/>
+  <text x="505" y="75" text-anchor="middle" fill="#6b6965" font-size="9" font-family="system-ui">2</text>
+
+  <rect x="282" y="100" width="238" height="72" rx="8" fill="#1a1917" stroke="#1e1d1b" stroke-width="1"/>
+  <text x="292" y="118" fill="#e5e5e0" font-size="11" font-family="system-ui">Autenticação OAuth 2.0</text>
+  <rect x="292" y="126" width="46" height="14" rx="7" fill="#232120"/>
+  <text x="315" y="136" text-anchor="middle" fill="#6b6965" font-size="8" font-family="system-ui">Backend</text>
+  <rect x="344" y="126" width="32" height="14" rx="7" fill="rgba(239,68,68,.12)"/>
+  <text x="360" y="136" text-anchor="middle" fill="#ef4444" font-size="8" font-family="system-ui">alta</text>
+  <circle cx="504" cy="133" r="10" fill="#f59e0b"/>
+  <text x="504" y="137" text-anchor="middle" fill="white" font-size="7" font-weight="700" font-family="system-ui">CB</text>
+  <rect x="454" y="148" width="44" height="16" rx="5" fill="rgba(245,158,11,.08)" stroke="rgba(245,158,11,.2)" stroke-width="1"/>
+  <text x="476" y="159" text-anchor="middle" fill="#f59e0b" font-size="9" font-family="system-ui">mover →</text>
+
+  <rect x="282" y="180" width="238" height="72" rx="8" fill="#1a1917" stroke="#1e1d1b" stroke-width="1"/>
+  <text x="292" y="198" fill="#e5e5e0" font-size="11" font-family="system-ui">Dashboard de analytics</text>
+  <rect x="292" y="206" width="50" height="14" rx="7" fill="#232120"/>
+  <text x="317" y="216" text-anchor="middle" fill="#6b6965" font-size="8" font-family="system-ui">Frontend</text>
+  <rect x="348" y="206" width="36" height="14" rx="7" fill="rgba(245,158,11,.12)"/>
+  <text x="366" y="216" text-anchor="middle" fill="#f59e0b" font-size="8" font-family="system-ui">média</text>
+  <circle cx="504" cy="213" r="10" fill="#6366f1"/>
+  <text x="504" y="217" text-anchor="middle" fill="white" font-size="7" font-weight="700" font-family="system-ui">GU</text>
+  <rect x="454" y="228" width="44" height="16" rx="5" fill="rgba(245,158,11,.08)" stroke="rgba(245,158,11,.2)" stroke-width="1"/>
+  <text x="476" y="239" text-anchor="middle" fill="#f59e0b" font-size="9" font-family="system-ui">mover →</text>
+
+  <rect x="282" y="260" width="238" height="30" rx="7" fill="transparent" stroke="#1e1d1b" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="401" y="279" text-anchor="middle" fill="#6b6965" font-size="10" font-family="system-ui">+ tarefa</text>
+
+  <!-- Column: Concluído -->
+  <rect x="536" y="55" width="254" height="436" rx="10" fill="#111010"/>
+  <rect x="536" y="79" width="254" height="14" fill="#111010"/>
+  <circle cx="554" cy="74" r="5" fill="#22c55e"/>
+  <text x="566" y="79" fill="#a8a6a0" font-size="11" font-weight="600" font-family="system-ui">Concluído</text>
+  <rect x="756" y="64" width="22" height="16" rx="8" fill="#1e1d1b"/>
+  <text x="767" y="75" text-anchor="middle" fill="#6b6965" font-size="9" font-family="system-ui">2</text>
+
+  <rect x="544" y="100" width="238" height="64" rx="8" fill="#141312" stroke="#1e1d1b" stroke-width="1"/>
+  <text x="554" y="118" fill="#6b6965" font-size="11" font-family="system-ui">Setup do banco de dados</text>
+  <rect x="554" y="126" width="46" height="14" rx="7" fill="#232120"/>
+  <text x="577" y="136" text-anchor="middle" fill="#6b6965" font-size="8" font-family="system-ui">Backend</text>
+  <rect x="606" y="126" width="32" height="14" rx="7" fill="rgba(239,68,68,.08)"/>
+  <text x="622" y="136" text-anchor="middle" fill="#6b6965" font-size="8" font-family="system-ui">alta</text>
+  <circle cx="766" cy="124" r="10" fill="#3a3a3a"/>
+  <text x="766" y="128" text-anchor="middle" fill="#6b6965" font-size="7" font-weight="700" font-family="system-ui">CB</text>
+
+  <rect x="544" y="172" width="238" height="64" rx="8" fill="#141312" stroke="#1e1d1b" stroke-width="1"/>
+  <text x="554" y="190" fill="#6b6965" font-size="11" font-family="system-ui">Landing page v2</text>
+  <rect x="554" y="198" width="50" height="14" rx="7" fill="#232120"/>
+  <text x="579" y="208" text-anchor="middle" fill="#6b6965" font-size="8" font-family="system-ui">Frontend</text>
+  <rect x="610" y="198" width="36" height="14" rx="7" fill="rgba(245,158,11,.08)"/>
+  <text x="628" y="208" text-anchor="middle" fill="#6b6965" font-size="8" font-family="system-ui">média</text>
+  <circle cx="766" cy="196" r="10" fill="#3a3a3a"/>
+  <text x="766" y="200" text-anchor="middle" fill="#6b6965" font-size="7" font-weight="700" font-family="system-ui">GU</text>
+</svg>

@@ -561,6 +561,7 @@ function Projects(){
             tone="warm"
             year="2025" stack="React Native · Expo · Supabase"
             title="FinFlow" subtitle="App de controle financeiro pessoal"
+            slot="finflow" preview="img/finflow.svg"
             demo={window.FinFlowDemo}
             onOpen={setActive}
           />
@@ -581,6 +582,7 @@ function Projects(){
             year="2025" stack="Next.js · PostgreSQL · Vercel"
             title="Kanva" subtitle="Kanban board para times pequenos"
             desc="Gestão visual de tarefas com fluxo sprint, prioridades e times — sem overhead de ferramentas enterprise."
+            slot="kanva" preview="img/kanva.svg"
             demo={window.KanvaDemo}
             onOpen={setActive}
           />
@@ -590,6 +592,7 @@ function Projects(){
             year="2025" stack="Next.js · Claude API · Vercel AI SDK"
             title="PulseAI" subtitle="Editor com IA para melhorar, resumir e expandir textos"
             desc="Quatro ações de IA em um clique: melhora estilo, resume, expande rascunhos e traduz instantaneamente."
+            slot="pulseai" preview="img/pulseai.svg"
             demo={window.PulseAIDemo}
             onOpen={setActive}
           />
