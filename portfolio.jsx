@@ -433,8 +433,12 @@ function ProjectModal({ project, onClose }){
           alignItems:'center', justifyContent:'center', lineHeight:1,
         }}>✕</button>
 
-        {/* preview */}
-        {project.slot && (
+        {/* interactive demo or static preview */}
+        {project.demo ? (
+          <div style={{ marginBottom:32 }}>
+            <project.demo />
+          </div>
+        ) : project.slot && (
           <div style={{ borderRadius:14, overflow:'hidden', marginBottom:32, height:340 }}>
             <image-slot
               id={`proj-modal-${project.slot}`}
@@ -529,6 +533,7 @@ function Projects(){
             title="Qualyra" subtitle="SaaS de gestão da qualidade — da planilha ao processo rastreável"
             desc="Centraliza não-conformidades com fluxo estruturado, responsabilidades claras e trilha de auditoria completa. Multi-tenant, controle de acesso por papéis e dashboards em tempo real."
             link="https://github.com/uriartegui/qualyra"
+            demo={window.QualyraDemo}
             slot="qualyra"
             preview="img/qualyra.svg"
             features={[
@@ -546,6 +551,7 @@ function Projects(){
             year="2025" stack="Next.js · Claude API"
             title="Cozinhei" subtitle="App de receitas geradas por IA"
             link="https://github.com/uriartegui/cozinhei"
+            demo={window.CozinheiDemo}
             slot="cozinhei"
             preview="img/cozinhei.svg"
             onOpen={setActive}
@@ -591,7 +597,7 @@ function Projects(){
   );
 }
 
-function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, features, featured, slot, preview, link, onOpen }){
+function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, features, featured, slot, preview, demo, link, onOpen }){
   const [hover,setHover] = useState(false);
   const tones = {
     'amber':       { bg:'#1F1408', border:'#3a2310', accent:'var(--accent)' },
@@ -602,7 +608,7 @@ function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, fea
   const c = tones[tone] || tones.ink;
 
   const handleClick = ()=>{
-    if(onOpen) onOpen({ tone, year, stack, title, subtitle, desc, features, slot, preview, link });
+    if(onOpen) onOpen({ tone, year, stack, title, subtitle, desc, features, slot, preview, demo, link });
   };
 
   return (
