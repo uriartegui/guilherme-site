@@ -559,9 +559,9 @@ function Projects(){
           <ProjectCard
             span="span 2" rows="span 1"
             tone="warm"
-            year="2025" stack="Next.js · Stripe · Resend"
-            title="Cobranças SaaS" subtitle="Sistema de cobranças recorrentes"
-            link="https://github.com/uriartegui/cobrancas-saas"
+            year="2025" stack="React Native · Expo · Supabase"
+            title="FinFlow" subtitle="App de controle financeiro pessoal"
+            demo={window.FinFlowDemo}
             onOpen={setActive}
           />
           <ProjectCard
@@ -578,17 +578,19 @@ function Projects(){
           <ProjectCard
             span="span 3" rows="span 1"
             tone="amber-dim"
-            year="2024" stack="Robot Framework · Playwright"
-            title="Framework QA" subtitle="Suite de automação de testes end-to-end"
-            link="https://github.com/uriartegui/framework-qa"
+            year="2025" stack="Next.js · PostgreSQL · Vercel"
+            title="Kanva" subtitle="Kanban board para times pequenos"
+            desc="Gestão visual de tarefas com fluxo sprint, prioridades e times — sem overhead de ferramentas enterprise."
+            demo={window.KanvaDemo}
             onOpen={setActive}
           />
           <ProjectCard
             span="span 3" rows="span 1"
             tone="warm"
-            year="2024" stack="Next.js · Supabase"
-            title="Colmeia" subtitle="Plataforma de gestão para times remotos"
-            link="https://github.com/uriartegui/colmeia"
+            year="2025" stack="Next.js · Claude API · Vercel AI SDK"
+            title="PulseAI" subtitle="Editor com IA para melhorar, resumir e expandir textos"
+            desc="Quatro ações de IA em um clique: melhora estilo, resume, expande rascunhos e traduz instantaneamente."
+            demo={window.PulseAIDemo}
             onOpen={setActive}
           />
         </div>

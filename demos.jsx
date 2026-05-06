@@ -556,4 +556,329 @@ function QualyraDemo() {
   );
 }
 
-Object.assign(window, { CozinheiDemo, QualyraDemo });
+/* ─── FinFlow Demo ────────────────────────────────────── */
+const TXNS = [
+  { id:1, cat:'🛒', label:'Mercado Extra',   amount:-180.50, date:'hoje'  },
+  { id:2, cat:'💡', label:'Conta de luz',    amount:-95.00,  date:'ontem' },
+  { id:3, cat:'💰', label:'Salário',         amount:5200.00, date:'01/05' },
+  { id:4, cat:'🍕', label:'iFood',           amount:-42.90,  date:'30/04' },
+  { id:5, cat:'🚗', label:'Uber',            amount:-23.00,  date:'29/04' },
+  { id:6, cat:'📱', label:'Spotify',         amount:-21.90,  date:'28/04' },
+];
+
+function FinFlowDemo() {
+  const [screen, setScreen] = useState('home');
+  const [txns, setTxns]     = useState(TXNS);
+  const [form, setForm]     = useState({ label:'', amount:'', cat:'🛒', type:'expense' });
+
+  const balance  = txns.reduce((s,t)=>s+t.amount, 0);
+  const income   = txns.filter(t=>t.amount>0).reduce((s,t)=>s+t.amount, 0);
+  const expenses = txns.filter(t=>t.amount<0).reduce((s,t)=>s+Math.abs(t.amount), 0);
+
+  const add = () => {
+    if(!form.label||!form.amount) return;
+    const amt = form.type==='expense' ? -Math.abs(parseFloat(form.amount)) : Math.abs(parseFloat(form.amount));
+    setTxns(t=>[{ id:Date.now(), cat:form.cat, label:form.label, amount:amt, date:'agora' },...t]);
+    setForm({ label:'', amount:'', cat:'🛒', type:'expense' });
+    setScreen('home');
+  };
+
+  const fmt = (n) => n.toLocaleString('pt-BR',{ minimumFractionDigits:2 });
+
+  return (
+    <PhoneFrame>
+      {screen==='home' && (
+        <div style={{ fontFamily:'system-ui' }}>
+          <div style={{ background:'linear-gradient(135deg,#1f1408,#2a1a0a)', padding:'20px 16px 24px' }}>
+            <div style={{ fontSize:10, color:'rgba(245,158,11,.7)', letterSpacing:'.1em', textTransform:'uppercase', marginBottom:6 }}>Saldo total · maio</div>
+            <div style={{ fontSize:32, fontWeight:800, color:'#e5e5e0', letterSpacing:'-.03em', marginBottom:16 }}>R$ {fmt(balance)}</div>
+            <div style={{ display:'flex', gap:20 }}>
+              <div>
+                <div style={{ fontSize:9, color:'rgba(34,197,94,.7)', letterSpacing:'.08em' }}>↑ ENTRADA</div>
+                <div style={{ fontSize:14, fontWeight:700, color:'#22c55e' }}>R$ {fmt(income)}</div>
+              </div>
+              <div style={{ width:1, background:'rgba(255,255,255,.08)' }} />
+              <div>
+                <div style={{ fontSize:9, color:'rgba(239,68,68,.7)', letterSpacing:'.08em' }}>↓ SAÍDA</div>
+                <div style={{ fontSize:14, fontWeight:700, color:'#ef4444' }}>R$ {fmt(expenses)}</div>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ padding:'14px 16px' }}>
+            <div style={{ fontSize:9, color:'#6b6965', letterSpacing:'.1em', textTransform:'uppercase', marginBottom:12 }}>Transações recentes</div>
+            {txns.slice(0,7).map(t=>(
+              <div key={t.id} style={{ display:'flex', alignItems:'center', gap:12, marginBottom:10 }}>
+                <div style={{ width:36, height:36, borderRadius:10, background:'#1a1917', display:'grid', placeItems:'center', fontSize:18, flexShrink:0 }}>{t.cat}</div>
+                <div style={{ flex:1 }}>
+                  <div style={{ fontSize:13, color:'#e5e5e0', fontWeight:500 }}>{t.label}</div>
+                  <div style={{ fontSize:10, color:'#6b6965' }}>{t.date}</div>
+                </div>
+                <div style={{ fontSize:13, fontWeight:600, color:t.amount>0?'#22c55e':'#e5e5e0' }}>
+                  {t.amount>0?'+':''}R$ {fmt(Math.abs(t.amount))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ position:'sticky', bottom:0, padding:'0 16px 16px', textAlign:'right' }}>
+            <button onClick={()=>setScreen('add')} style={{
+              width:50, height:50, borderRadius:99, background:'#f59e0b',
+              color:'#0a0908', border:'none', fontSize:26, cursor:'pointer',
+              display:'inline-grid', placeItems:'center',
+              boxShadow:'0 4px 20px rgba(245,158,11,.4)',
+            }}>+</button>
+          </div>
+        </div>
+      )}
+
+      {screen==='add' && (
+        <div style={{ padding:'16px', fontFamily:'system-ui' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:20 }}>
+            <button onClick={()=>setScreen('home')} style={{ background:'none', border:'none', color:'#f59e0b', fontSize:20, cursor:'pointer', padding:0 }}>←</button>
+            <div style={{ fontSize:16, fontWeight:700, color:'#e5e5e0' }}>Nova transação</div>
+          </div>
+
+          <div style={{ display:'flex', background:'#141312', borderRadius:10, padding:4, marginBottom:16 }}>
+            {['expense','income'].map(t=>(
+              <button key={t} onClick={()=>setForm(f=>({...f,type:t}))} style={{
+                flex:1, padding:'8px', borderRadius:8, border:'none', cursor:'pointer',
+                background:form.type===t?(t==='expense'?'#ef4444':'#22c55e'):'transparent',
+                color:form.type===t?'#fff':'#6b6965',
+                fontSize:12, fontWeight:600, transition:'all .2s',
+              }}>{t==='expense'?'↓ Saída':'↑ Entrada'}</button>
+            ))}
+          </div>
+
+          <div style={{ fontSize:9, color:'#6b6965', letterSpacing:'.08em', textTransform:'uppercase', marginBottom:8 }}>Categoria</div>
+          <div style={{ display:'flex', gap:8, marginBottom:16, flexWrap:'wrap' }}>
+            {['🛒','💡','🍕','🚗','📱','💰','🏠','✈️'].map(c=>(
+              <button key={c} onClick={()=>setForm(f=>({...f,cat:c}))} style={{
+                width:40, height:40, borderRadius:10,
+                border:`1px solid ${form.cat===c?'#f59e0b':'#1e1d1b'}`,
+                background:form.cat===c?'rgba(245,158,11,.1)':'#141312',
+                fontSize:20, cursor:'pointer',
+              }}>{c}</button>
+            ))}
+          </div>
+
+          <input value={form.label} onChange={e=>setForm(f=>({...f,label:e.target.value}))}
+            placeholder="Descrição"
+            style={{ width:'100%', background:'#141312', border:'1px solid #1e1d1b', borderRadius:10, padding:'12px', color:'#e5e5e0', fontSize:13, fontFamily:'system-ui', outline:'none', marginBottom:10, boxSizing:'border-box' }}
+          />
+          <input value={form.amount} onChange={e=>setForm(f=>({...f,amount:e.target.value}))}
+            placeholder="Valor (ex: 45.90)" type="number"
+            style={{ width:'100%', background:'#141312', border:'1px solid #1e1d1b', borderRadius:10, padding:'12px', color:'#e5e5e0', fontSize:13, fontFamily:'system-ui', outline:'none', marginBottom:16, boxSizing:'border-box' }}
+          />
+          <button onClick={add} style={{
+            width:'100%', padding:'14px', borderRadius:12, background:'#f59e0b',
+            color:'#0a0908', border:'none', fontSize:14, fontWeight:700, cursor:'pointer',
+          }}>Adicionar transação</button>
+        </div>
+      )}
+    </PhoneFrame>
+  );
+}
+
+/* ─── Kanva Demo ──────────────────────────────────────── */
+const INIT_BOARD = {
+  todo:  [
+    { id:1, title:'Configurar CI/CD pipeline',       tag:'DevOps',   priority:'alta',  av:'GU' },
+    { id:2, title:'Design sistema de notificações',  tag:'Design',   priority:'média', av:'PM' },
+    { id:3, title:'Documentar endpoints da API',     tag:'Docs',     priority:'baixa', av:'GU' },
+  ],
+  doing: [
+    { id:4, title:'Autenticação OAuth 2.0',          tag:'Backend',  priority:'alta',  av:'CB' },
+    { id:5, title:'Dashboard de analytics',          tag:'Frontend', priority:'média', av:'GU' },
+  ],
+  done:  [
+    { id:6, title:'Setup do banco de dados',         tag:'Backend',  priority:'alta',  av:'CB' },
+    { id:7, title:'Landing page v2',                 tag:'Frontend', priority:'média', av:'GU' },
+  ],
+};
+const PRI = { alta:'#ef4444', média:'#f59e0b', baixa:'#22c55e' };
+const AVC = { GU:'#6366f1', PM:'#ec4899', CB:'#f59e0b' };
+const COLS = { todo:['A fazer','#6b6965'], doing:['Em progresso','#f59e0b'], done:['Concluído','#22c55e'] };
+
+function KanvaDemo() {
+  const [board, setBoard] = useState(INIT_BOARD);
+  const [newCard, setNewCard] = useState('');
+  const [addingTo, setAddingTo] = useState(null);
+
+  const advance = (card, from) => {
+    const order = ['todo','doing','done'];
+    const next = order[order.indexOf(from)+1];
+    if(!next) return;
+    setBoard(b=>({ ...b, [from]:b[from].filter(c=>c.id!==card.id), [next]:[...b[next],card] }));
+  };
+
+  const addCard = (col) => {
+    if(!newCard.trim()){ setAddingTo(null); return; }
+    setBoard(b=>({ ...b, [col]:[...b[col],{ id:Date.now(), title:newCard, tag:'Novo', priority:'média', av:'GU' }] }));
+    setNewCard(''); setAddingTo(null);
+  };
+
+  return (
+    <DesktopFrame url="kanva.app/board/sprint-12">
+      <div style={{ height:'100%', display:'flex', flexDirection:'column', fontFamily:'system-ui', background:'#0d0c0b' }}>
+        <div style={{ padding:'11px 16px', borderBottom:'1px solid #1e1d1b', display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0 }}>
+          <div>
+            <span style={{ fontSize:14, fontWeight:600, color:'#e5e5e0' }}>Sprint #12</span>
+            <span style={{ fontSize:11, color:'#6b6965', marginLeft:10 }}>7–21 mai · {Object.values(board).flat().length} tarefas</span>
+          </div>
+          <div style={{ display:'flex', gap:5 }}>
+            {['GU','PM','CB'].map(a=>(
+              <div key={a} style={{ width:26, height:26, borderRadius:99, background:AVC[a], color:'#fff', fontSize:9, fontWeight:700, display:'grid', placeItems:'center' }}>{a}</div>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ flex:1, display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:8, padding:'8px', overflow:'hidden' }}>
+          {['todo','doing','done'].map(col=>(
+            <div key={col} style={{ display:'flex', flexDirection:'column', background:'#111010', borderRadius:10, overflow:'hidden' }}>
+              <div style={{ padding:'9px 12px', display:'flex', alignItems:'center', justifyContent:'space-between', borderBottom:'1px solid #1e1d1b', flexShrink:0 }}>
+                <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+                  <div style={{ width:7, height:7, borderRadius:99, background:COLS[col][1] }} />
+                  <span style={{ fontSize:11, fontWeight:600, color:'#a8a6a0' }}>{COLS[col][0]}</span>
+                </div>
+                <span style={{ fontSize:9, color:'#6b6965', background:'#1e1d1b', borderRadius:99, padding:'2px 6px' }}>{board[col].length}</span>
+              </div>
+
+              <div style={{ flex:1, overflowY:'auto', padding:'7px' }}>
+                {board[col].map(card=>(
+                  <div key={card.id} style={{ background:'#1a1917', border:'1px solid #1e1d1b', borderRadius:8, padding:'9px', marginBottom:5 }}>
+                    <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:7 }}>
+                      <span style={{ fontSize:11, color:'#e5e5e0', lineHeight:1.4, flex:1, paddingRight:4 }}>{card.title}</span>
+                      <div style={{ width:20, height:20, borderRadius:99, background:AVC[card.av]||'#3a3a3a', color:'#fff', fontSize:8, fontWeight:700, display:'grid', placeItems:'center', flexShrink:0 }}>{card.av}</div>
+                    </div>
+                    <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+                      <div style={{ display:'flex', gap:4 }}>
+                        <span style={{ fontSize:8, padding:'2px 6px', borderRadius:99, background:'#232120', color:'#6b6965' }}>{card.tag}</span>
+                        <span style={{ fontSize:8, padding:'2px 6px', borderRadius:99, background:`${PRI[card.priority]}18`, color:PRI[card.priority] }}>{card.priority}</span>
+                      </div>
+                      {col!=='done' && (
+                        <button onClick={()=>advance(card,col)} style={{
+                          fontSize:9, padding:'2px 7px', borderRadius:5,
+                          background:'rgba(245,158,11,.08)', border:'1px solid rgba(245,158,11,.2)',
+                          color:'#f59e0b', cursor:'pointer',
+                        }}>→</button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+
+                {addingTo===col ? (
+                  <div>
+                    <textarea value={newCard} onChange={e=>setNewCard(e.target.value)} autoFocus
+                      placeholder="Título da tarefa..."
+                      onKeyDown={e=>{ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();addCard(col);} if(e.key==='Escape')setAddingTo(null); }}
+                      style={{ width:'100%', background:'#141312', border:'1px solid #f59e0b', borderRadius:7, padding:'7px', color:'#e5e5e0', fontSize:11, fontFamily:'system-ui', outline:'none', resize:'none', height:54, boxSizing:'border-box' }}
+                    />
+                    <div style={{ display:'flex', gap:5, marginTop:4 }}>
+                      <button onClick={()=>addCard(col)} style={{ flex:1, padding:'5px', borderRadius:6, background:'#f59e0b', color:'#0a0908', border:'none', fontSize:10, fontWeight:700, cursor:'pointer' }}>Adicionar</button>
+                      <button onClick={()=>setAddingTo(null)} style={{ padding:'5px 8px', borderRadius:6, background:'#1e1d1b', color:'#6b6965', border:'none', fontSize:10, cursor:'pointer' }}>✕</button>
+                    </div>
+                  </div>
+                ) : (
+                  <button onClick={()=>setAddingTo(col)} style={{
+                    width:'100%', padding:'6px', borderRadius:7,
+                    background:'transparent', border:'1px dashed #1e1d1b',
+                    color:'#6b6965', fontSize:10, cursor:'pointer',
+                  }}
+                    onMouseEnter={e=>{e.currentTarget.style.borderColor='#2e2c2a';e.currentTarget.style.color='#a8a6a0';}}
+                    onMouseLeave={e=>{e.currentTarget.style.borderColor='#1e1d1b';e.currentTarget.style.color='#6b6965';}}
+                  >+ tarefa</button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </DesktopFrame>
+  );
+}
+
+/* ─── PulseAI Demo ────────────────────────────────────── */
+const PULSE_DEFAULT = 'Escreva aqui o seu texto e use os botões acima para transformá-lo com inteligência artificial. Você pode melhorar a escrita, resumir ideias longas, expandir um rascunho ou traduzir para o inglês com um único clique.';
+const PULSE_RESULTS = {
+  melhorar: 'Escreva aqui o seu texto e utilize os botões acima para transformá-lo com inteligência artificial. Aprimore a qualidade da escrita, condense ideias extensas, desenvolva rascunhos iniciais ou realize traduções — tudo com um único clique.',
+  resumir:  'Use os botões acima para transformar seu texto com IA: melhore a escrita, resuma, expanda ou traduza com um clique.',
+  expandir: 'Escreva aqui o seu texto e use os botões acima para transformá-lo com inteligência artificial. A plataforma oferece um conjunto completo de ferramentas de processamento de linguagem natural: aprimore a qualidade gramatical e estilística de qualquer trecho, condense ideias complexas em versões mais objetivas, expanda rascunhos em textos mais completos e detalhados, ou traduza seu conteúdo para o inglês de forma fluente e contextualizada — tudo com um único clique, sem sair do editor.',
+  traduzir: 'Write your text here and use the buttons above to transform it with artificial intelligence. You can improve writing, summarize long ideas, expand a draft, or translate to English — all with a single click.',
+};
+
+function PulseAIDemo() {
+  const [text, setText]     = useState(PULSE_DEFAULT);
+  const [loading, setLoading] = useState(null);
+  const [history, setHistory] = useState([]);
+
+  const transform = (action) => {
+    setLoading(action);
+    setTimeout(()=>{
+      setHistory(h=>[text,...h.slice(0,2)]);
+      setText(PULSE_RESULTS[action]);
+      setLoading(null);
+    }, 1200);
+  };
+
+  const ACTIONS = [
+    { id:'melhorar', label:'✨ Melhorar', color:'#6366f1' },
+    { id:'resumir',  label:'📝 Resumir',  color:'#f59e0b' },
+    { id:'expandir', label:'🚀 Expandir', color:'#22c55e' },
+    { id:'traduzir', label:'🌐 Traduzir', color:'#ec4899' },
+  ];
+
+  return (
+    <DesktopFrame url="pulseai.app/editor">
+      <div style={{ height:'100%', display:'flex', flexDirection:'column', fontFamily:'system-ui', background:'#0d0c0b' }}>
+        <div style={{ padding:'9px 14px', borderBottom:'1px solid #1e1d1b', display:'flex', alignItems:'center', gap:7, flexShrink:0, flexWrap:'wrap' }}>
+          <span style={{ fontSize:12, fontWeight:700, color:'#e5e5e0', marginRight:4 }}>PulseAI</span>
+          <div style={{ width:1, height:14, background:'#1e1d1b' }} />
+          {ACTIONS.map(a=>(
+            <button key={a.id} onClick={()=>!loading&&transform(a.id)} style={{
+              padding:'5px 11px', borderRadius:7,
+              background:loading===a.id?`${a.color}18`:'#141312',
+              border:`1px solid ${loading===a.id?a.color:'#1e1d1b'}`,
+              color:loading===a.id?a.color:'#a8a6a0',
+              fontSize:11, cursor:loading?'not-allowed':'pointer',
+              display:'flex', alignItems:'center', gap:5, transition:'all .2s',
+            }}
+              onMouseEnter={e=>{ if(!loading){e.currentTarget.style.borderColor=a.color;e.currentTarget.style.color=a.color;} }}
+              onMouseLeave={e=>{ if(loading!==a.id){e.currentTarget.style.borderColor='#1e1d1b';e.currentTarget.style.color='#a8a6a0';} }}
+            >
+              {loading===a.id && <span style={{ width:9, height:9, borderRadius:99, border:'1.5px solid currentColor', borderTopColor:'transparent', display:'inline-block', animation:'spin .7s linear infinite' }} />}
+              {a.label}
+            </button>
+          ))}
+          <div style={{ flex:1 }} />
+          {history.length>0 && (
+            <button onClick={()=>{ setText(history[0]); setHistory(h=>h.slice(1)); }} style={{ padding:'5px 9px', borderRadius:7, background:'#141312', border:'1px solid #1e1d1b', color:'#6b6965', fontSize:10, cursor:'pointer' }}>↩ Desfazer</button>
+          )}
+          <span style={{ fontSize:10, color:'#6b6965' }}>{text.length} chars</span>
+        </div>
+
+        <div style={{ flex:1, position:'relative' }}>
+          {loading && (
+            <div style={{ position:'absolute', inset:0, background:'rgba(13,12,11,.65)', display:'flex', alignItems:'center', justifyContent:'center', gap:10, zIndex:10, backdropFilter:'blur(2px)' }}>
+              <div style={{ width:16, height:16, borderRadius:99, border:'2px solid #3a3a3a', borderTopColor:'#f59e0b', animation:'spin .8s linear infinite' }} />
+              <span style={{ fontSize:13, color:'#a8a6a0' }}>Processando com IA...</span>
+            </div>
+          )}
+          <textarea value={text} onChange={e=>setText(e.target.value)} style={{
+            width:'100%', height:'100%', padding:'20px 24px',
+            background:'transparent', border:'none', outline:'none',
+            color:'#e5e5e0', fontSize:14, fontFamily:'Georgia,serif',
+            lineHeight:1.85, resize:'none', boxSizing:'border-box',
+          }} />
+        </div>
+
+        <div style={{ padding:'5px 14px', borderTop:'1px solid #1e1d1b', display:'flex', gap:16 }}>
+          <span style={{ fontSize:9, color:'#6b6965' }}>{text.trim().split(/\s+/).filter(Boolean).length} palavras</span>
+          <span style={{ fontSize:9, color:'#6b6965' }}>{text.length} caracteres</span>
+        </div>
+      </div>
+    </DesktopFrame>
+  );
+}
+
+Object.assign(window, { CozinheiDemo, QualyraDemo, FinFlowDemo, KanvaDemo, PulseAIDemo });
