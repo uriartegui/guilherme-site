@@ -916,7 +916,7 @@ function Contact({ formRef }){
     if(Object.keys(errs).length) return;
     setSending(true);
     try {
-      const res = await fetch('https://formspree.io/f/xkgjpnoe', {
+      const res = await fetch('https://formspree.io/f/mqenleob', {
         method:'POST',
         headers:{ 'Content-Type':'application/json', Accept:'application/json' },
         body: JSON.stringify({
