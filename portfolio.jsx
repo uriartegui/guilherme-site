@@ -906,7 +906,7 @@ function Contact({ formRef }){
 
   const update = (k)=>(e)=> setState(s=>({ ...s, [k]: e.target.value }));
 
-  const submit = (e)=>{
+  const submit = async (e)=>{
     e.preventDefault();
     const errs = {};
     if(!state.name.trim()) errs.name = 'Diga seu nome';
@@ -915,7 +915,24 @@ function Contact({ formRef }){
     setErrors(errs);
     if(Object.keys(errs).length) return;
     setSending(true);
-    setTimeout(()=>{ setSending(false); setSent(true); }, 900);
+    try {
+      const res = await fetch('https://formspree.io/f/xkgjpnoe', {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json', Accept:'application/json' },
+        body: JSON.stringify({
+          name: state.name,
+          email: state.email,
+          budget: state.budget,
+          message: state.message,
+        }),
+      });
+      if(res.ok){ setSent(true); }
+      else { alert('Erro ao enviar. Tente pelo email diretamente.'); }
+    } catch(_){
+      alert('Erro de conexão. Tente pelo email diretamente.');
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
