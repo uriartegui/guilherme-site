@@ -393,10 +393,10 @@ function ServiceCard({ n, title, desc, tags, delay }){
 /* ---------- PROJECT MODAL ---------- */
 function ProjectModal({ project, onClose }){
   const tones = {
-    'amber':     { accent:'var(--accent)' },
-    'amber-dim': { accent:'#FB923C' },
-    'ink':       { accent:'var(--fg)' },
-    'warm':      { accent:'#E8B57A' },
+    'amber':     { accent:'var(--accent)',  tag:'rgba(245,158,11,.12)', tagBorder:'rgba(245,158,11,.25)' },
+    'amber-dim': { accent:'#FB923C',        tag:'rgba(251,146,60,.1)',  tagBorder:'rgba(251,146,60,.2)'  },
+    'ink':       { accent:'var(--fg)',      tag:'rgba(255,255,255,.06)',tagBorder:'rgba(255,255,255,.12)'},
+    'warm':      { accent:'#E8B57A',        tag:'rgba(232,181,122,.1)', tagBorder:'rgba(232,181,122,.2)' },
   };
   const c = tones[project.tone] || tones.ink;
   const accentColor = c.accent === 'var(--fg)' ? 'var(--fg-dim)' : c.accent;
@@ -411,6 +411,19 @@ function ProjectModal({ project, onClose }){
     };
   },[]);
 
+  const SectionLabel = ({ children })=>(
+    <div className="mono" style={{
+      fontSize:10, letterSpacing:'.12em', textTransform:'uppercase',
+      color:'var(--fg-mute)', marginBottom:14,
+      display:'flex', alignItems:'center', gap:10,
+    }}>
+      <span style={{ width:18, height:1, background:'var(--line-2)', display:'inline-block' }}></span>
+      {children}
+    </div>
+  );
+
+  const stackTags = project.stack ? project.stack.split('·').map(s=>s.trim()) : [];
+
   return (
     <div onClick={onClose} style={{
       position:'fixed', inset:0, zIndex:1000,
@@ -420,10 +433,11 @@ function ProjectModal({ project, onClose }){
     }}>
       <div onClick={e=>e.stopPropagation()} style={{
         background:'#141210', border:'1px solid #2a2520',
-        borderRadius:22, padding:40, maxWidth:820, width:'100%',
+        borderRadius:22, padding:40, maxWidth:860, width:'100%',
         maxHeight:'90vh', overflowY:'auto', position:'relative',
         animation:'slideUp .25s cubic-bezier(.2,.7,.2,1)',
       }}>
+
         {/* close */}
         <button onClick={onClose} style={{
           position:'absolute', top:18, right:18,
@@ -433,13 +447,29 @@ function ProjectModal({ project, onClose }){
           alignItems:'center', justifyContent:'center', lineHeight:1,
         }}>✕</button>
 
+        {/* demo notice */}
+        <div style={{
+          display:'flex', alignItems:'center', gap:10, flexWrap:'wrap',
+          marginBottom:28, padding:'9px 16px',
+          background:'rgba(245,158,11,.05)', border:'1px solid rgba(245,158,11,.14)',
+          borderRadius:10,
+        }}>
+          <span style={{ color:'var(--accent)', fontSize:11 }}>✦</span>
+          <span className="mono" style={{ fontSize:11, color:'var(--fg-dim)', letterSpacing:'.04em' }}>
+            demonstração interativa — prévia simplificada do sistema
+          </span>
+          <span style={{ marginLeft:'auto', fontSize:11, color:'var(--fg-mute)' }}>
+            sistema completo disponível mediante contato
+          </span>
+        </div>
+
         {/* interactive demo or static preview */}
         {project.demo ? (
-          <div style={{ marginBottom:32 }}>
+          <div style={{ marginBottom:36 }}>
             <project.demo />
           </div>
         ) : project.slot && (
-          <div style={{ borderRadius:14, overflow:'hidden', marginBottom:32, height:340 }}>
+          <div style={{ borderRadius:14, overflow:'hidden', marginBottom:36, height:340 }}>
             <image-slot
               id={`proj-modal-${project.slot}`}
               src={project.preview}
@@ -450,49 +480,91 @@ function ProjectModal({ project, onClose }){
           </div>
         )}
 
-        {/* meta */}
-        <div style={{ display:'flex', gap:14, marginBottom:18, alignItems:'center' }}>
-          <span className="mono" style={{ fontSize:11, color:'var(--fg-mute)', letterSpacing:'.1em', textTransform:'uppercase' }}>{project.year}</span>
-          <span style={{ width:1, height:10, background:'var(--line-2)' }}></span>
-          <span className="mono" style={{ fontSize:11, color:'var(--fg-mute)', letterSpacing:'.06em' }}>{project.stack}</span>
+        {/* title block */}
+        <div style={{ marginBottom:28 }}>
+          <div style={{ display:'flex', gap:8, alignItems:'center', marginBottom:14, flexWrap:'wrap' }}>
+            <span className="mono" style={{
+              fontSize:11, color:'var(--fg-mute)', letterSpacing:'.1em',
+              textTransform:'uppercase', padding:'3px 9px',
+              background:'var(--bg-3)', borderRadius:6,
+            }}>{project.year}</span>
+            {stackTags.map((tag,i)=>(
+              <span key={i} className="mono" style={{
+                fontSize:11, color:accentColor, letterSpacing:'.04em',
+                padding:'3px 9px', background:c.tag,
+                border:`1px solid ${c.tagBorder}`, borderRadius:6,
+              }}>{tag}</span>
+            ))}
+          </div>
+
+          <h3 style={{ fontSize:'clamp(28px,4vw,44px)', letterSpacing:'-.03em', fontWeight:600, marginBottom:8, lineHeight:1.05, color:'var(--fg)' }}>
+            {project.title}
+            <span style={{ display:'inline-block', marginLeft:10, width:8, height:8, borderRadius:99, background:c.accent }}></span>
+          </h3>
+          <p style={{ fontSize:16, color:'var(--fg-dim)', lineHeight:1.5, marginBottom: project.desc ? 14 : 0 }}>{project.subtitle}</p>
+          {project.desc && (
+            <p style={{ fontSize:15, color:'var(--fg-mute)', lineHeight:1.7, maxWidth:'58ch' }}>{project.desc}</p>
+          )}
         </div>
 
-        {/* title */}
-        <h3 style={{ fontSize:'clamp(28px,4vw,44px)', letterSpacing:'-.03em', fontWeight:600, marginBottom:8, lineHeight:1.05, color:'var(--fg)' }}>
-          {project.title}
-          <span style={{ display:'inline-block', marginLeft:10, width:8, height:8, borderRadius:99, background:c.accent }}></span>
-        </h3>
-        <p style={{ fontSize:16, color:'var(--fg-dim)', marginBottom: project.desc ? 20 : 32, lineHeight:1.5 }}>{project.subtitle}</p>
-        {project.desc && (
-          <p style={{ fontSize:15, color:'var(--fg-mute)', lineHeight:1.7, marginBottom: project.features ? 24 : 32, maxWidth:'58ch' }}>{project.desc}</p>
+        <div style={{ height:1, background:'var(--line)', marginBottom:28 }}></div>
+
+        {/* architecture */}
+        {project.arch && (
+          <div style={{ marginBottom:28 }}>
+            <SectionLabel>Arquitetura</SectionLabel>
+            <div className="mono" style={{
+              fontSize:12, color:'var(--fg-dim)', lineHeight:1.8,
+              padding:'14px 18px', background:'var(--bg-2)',
+              border:'1px solid var(--line)', borderRadius:10,
+              letterSpacing:'.02em',
+            }}>
+              {project.arch}
+            </div>
+          </div>
         )}
 
+        {/* tech highlights */}
         {project.features && (
-          <ul style={{ listStyle:'none', display:'flex', flexDirection:'column', gap:10, marginBottom:32 }}>
-            {project.features.map((f,i)=>(
-              <li key={i} style={{ display:'flex', alignItems:'flex-start', gap:10, fontSize:14, color:'var(--fg-dim)', lineHeight:1.5 }}>
-                <span style={{ marginTop:4, width:6, height:6, borderRadius:99, background:accentColor, flexShrink:0 }}></span>
-                {f}
-              </li>
-            ))}
-          </ul>
+          <div style={{ marginBottom:28 }}>
+            <SectionLabel>Destaques técnicos</SectionLabel>
+            <ul style={{ listStyle:'none', display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))', gap:10 }}>
+              {project.features.map((f,i)=>(
+                <li key={i} style={{
+                  display:'flex', alignItems:'flex-start', gap:10,
+                  fontSize:13.5, color:'var(--fg-dim)', lineHeight:1.55,
+                  padding:'12px 14px', background:'var(--bg-2)',
+                  border:'1px solid var(--line)', borderRadius:9,
+                }}>
+                  <span style={{ marginTop:5, width:5, height:5, borderRadius:99, background:accentColor, flexShrink:0 }}></span>
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
 
-        {/* github button */}
-        {project.link && (
-          <a href={project.link} target="_blank" rel="noopener noreferrer" style={{
-            display:'inline-flex', alignItems:'center', gap:8,
-            padding:'11px 22px', borderRadius:10,
-            border:`1px solid ${accentColor}55`,
-            color:accentColor, fontSize:13, textDecoration:'none',
-            letterSpacing:'.02em', transition:'background .2s',
-          }}
-            onMouseEnter={e=>e.currentTarget.style.background='rgba(255,255,255,.05)'}
-            onMouseLeave={e=>e.currentTarget.style.background='transparent'}
-          >
-            Ver no GitHub →
-          </a>
-        )}
+        {/* footer */}
+        <div style={{ display:'flex', alignItems:'center', gap:14, flexWrap:'wrap' }}>
+          {project.link && (
+            <a href={project.link} target="_blank" rel="noopener noreferrer" style={{
+              display:'inline-flex', alignItems:'center', gap:8,
+              padding:'11px 22px', borderRadius:10,
+              border:`1px solid ${accentColor}55`,
+              color:accentColor, fontSize:13, textDecoration:'none',
+              letterSpacing:'.02em', transition:'background .2s',
+            }}
+              onMouseEnter={e=>e.currentTarget.style.background='rgba(255,255,255,.05)'}
+              onMouseLeave={e=>e.currentTarget.style.background='transparent'}
+            >
+              Ver no GitHub →
+            </a>
+          )}
+          <span style={{ fontSize:12, color:'var(--fg-mute)' }}>
+            Quer ver o sistema completo? <span style={{ color:accentColor }}>Entre em contato.</span>
+          </span>
+        </div>
+
       </div>
     </div>
   );
@@ -536,44 +608,48 @@ function Projects(){
             demo={window.QualyraDemo}
             slot="qualyra"
             preview="img/qualyra.svg"
+            arch="React (Vite) → Spring Boot REST API → PostgreSQL · JWT Auth · RBAC"
             features={[
-              'Fluxo OPEN → IN_PROGRESS → RESOLVED → CLOSED',
-              'Controle de acesso por papéis (RBAC)',
-              'Isolamento multi-tenant seguro',
-              'Trilha de auditoria para conformidade',
-              'Dashboards de visibilidade em tempo real',
+              'Fluxo de status OPEN → IN_PROGRESS → RESOLVED → CLOSED com histórico imutável',
+              'Controle de acesso por papéis (RBAC) — admin, gestor, operador e visualizador',
+              'Isolamento multi-tenant via row-level security no PostgreSQL',
+              'Trilha de auditoria completa — cada mudança de estado é registrada com autor e timestamp',
+              'Dashboards em tempo real com métricas de SLA, taxa de resolução e volume por categoria',
             ]}
             onOpen={setActive}
           />
           <ProjectCard
             span="span 2" rows="span 1"
             tone="ink"
-            year="2025" stack="Next.js · Claude API"
-            title="Cozinhei" subtitle="App de receitas geradas por IA"
+            year="2025" stack="Next.js · Anthropic API"
+            title="Cozinhei" subtitle="App de receitas geradas por IA a partir dos ingredientes disponíveis"
             link="https://github.com/uriartegui/cozinhei"
             demo={window.CozinheiDemo}
             slot="cozinhei"
             preview="img/cozinhei.svg"
+            arch="Next.js App Router → Anthropic claude-opus-4-5 (streaming) → structured output parser"
+            features={[
+              'Streaming token a token — resposta aparece em tempo real, sem tela de espera',
+              'Prompt estruturado com restrições dietéticas, porções e preferências do usuário',
+              'Parser de markdown para exibir ingredientes e modo de preparo formatados',
+              'Rate limiting por sessão para controle de custos de API',
+            ]}
             onOpen={setActive}
           />
           <ProjectCard
             span="span 2" rows="span 1"
             tone="warm"
             year="2025" stack="React Native · Expo · Supabase"
-            title="FinFlow" subtitle="App de controle financeiro pessoal"
+            title="FinFlow" subtitle="App de controle financeiro pessoal com sync em tempo real"
             slot="finflow" preview="img/finflow.svg"
             demo={window.FinFlowDemo}
-            onOpen={setActive}
-          />
-          <ProjectCard
-            span="span 3" rows="span 2"
-            tone="ink"
-            year="2024" stack="Next.js · Supabase · OpenAI"
-            title="Repution" subtitle="Plataforma de gestão de reputação online"
-            desc="Monitora avaliações em tempo real e sugere respostas com IA. Painel centralizado para múltiplas unidades."
-            link="https://github.com/uriartegui/repution"
-            slot="repution"
-            preview="img/repution.svg"
+            arch="React Native · Expo Router → Supabase Realtime → PostgreSQL (RLS)"
+            features={[
+              'Sincronização em tempo real com Supabase Realtime channels — sem pull manual',
+              'Persistência offline-first com fila de retry automático ao reconectar',
+              'Categorização automática de transações por análise de padrões de nome',
+              'Relatórios mensais calculados via SQL functions no banco — sem processamento no cliente',
+            ]}
             onOpen={setActive}
           />
           <ProjectCard
@@ -584,6 +660,13 @@ function Projects(){
             desc="Gestão visual de tarefas com fluxo sprint, prioridades e times — sem overhead de ferramentas enterprise."
             slot="kanva" preview="img/kanva.svg"
             demo={window.KanvaDemo}
+            arch="Next.js · React Server Components → PostgreSQL · Drizzle ORM → Vercel Edge"
+            features={[
+              'Atualizações otimistas — UI responde antes da confirmação do servidor, com rollback automático',
+              'Sprints com datas, burndown e controle de capacidade por membro do time',
+              'Drag-and-drop com estado persistido no banco — sem dessincronização entre abas',
+              'Controle de acesso por workspace: admin, membro e visualizador com permissões granulares',
+            ]}
             onOpen={setActive}
           />
           <ProjectCard
@@ -594,6 +677,13 @@ function Projects(){
             desc="Quatro ações de IA em um clique: melhora estilo, resume, expande rascunhos e traduz instantaneamente."
             slot="pulseai" preview="img/pulseai.svg"
             demo={window.PulseAIDemo}
+            arch="Next.js → Vercel AI SDK · streaming → Claude claude-opus-4-5 (Anthropic API)"
+            features={[
+              'Streaming token a token via Vercel AI SDK — latência percebida mínima, sem espera de resposta completa',
+              'Histórico de undo/redo com até 20 estados preservados em memória por sessão',
+              'Diff highlighting — visualize exatamente o que a IA alterou no texto original',
+              '4 transforms em um clique: melhora estilo, resume, expande rascunho e traduz (PT ↔ EN)',
+            ]}
             onOpen={setActive}
           />
         </div>
@@ -602,7 +692,7 @@ function Projects(){
   );
 }
 
-function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, features, featured, slot, preview, demo, link, onOpen }){
+function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, features, arch, featured, slot, preview, demo, link, onOpen }){
   const [hover,setHover] = useState(false);
   const tones = {
     'amber':       { bg:'#1F1408', border:'#3a2310', accent:'var(--accent)' },
@@ -613,7 +703,7 @@ function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, fea
   const c = tones[tone] || tones.ink;
 
   const handleClick = ()=>{
-    if(onOpen) onOpen({ tone, year, stack, title, subtitle, desc, features, slot, preview, demo, link });
+    if(onOpen) onOpen({ tone, year, stack, title, subtitle, desc, features, arch, slot, preview, demo, link });
   };
 
   return (
