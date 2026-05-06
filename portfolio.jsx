@@ -389,6 +389,98 @@ function ServiceCard({ n, title, desc, tags, delay }){
   );
 }
 
+/* ---------- BROWSER FRAME (live iframe in modal) ---------- */
+function BrowserFrame({ url, title }){
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <div style={{ borderRadius:14, overflow:'hidden', border:'1px solid var(--line)', marginBottom:32 }}>
+      {/* Chrome bar */}
+      <div style={{
+        background:'#1a1917', padding:'10px 16px',
+        display:'flex', alignItems:'center', gap:10,
+        borderBottom:'1px solid var(--line)',
+      }}>
+        <div style={{ display:'flex', gap:6 }}>
+          {['#3a3a3a','#3a3a3a','#3a3a3a'].map((c,i)=>(
+            <div key={i} style={{ width:10, height:10, borderRadius:99, background:c }}></div>
+          ))}
+        </div>
+        <div style={{
+          flex:1, background:'#111010', borderRadius:6,
+          padding:'5px 12px', fontSize:11, color:'var(--fg-mute)',
+          fontFamily:'monospace', letterSpacing:'.02em',
+          overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap',
+        }}>
+          {url}
+        </div>
+        <a href={url} target="_blank" rel="noopener noreferrer" style={{
+          fontSize:11, color:'var(--fg-mute)', whiteSpace:'nowrap',
+          textDecoration:'none', letterSpacing:'.02em',
+        }}
+          onMouseEnter={e=>e.currentTarget.style.color='var(--fg)'}
+          onMouseLeave={e=>e.currentTarget.style.color='var(--fg-mute)'}
+        >↗ abrir</a>
+      </div>
+      {/* iframe */}
+      <div style={{ position:'relative', height:420 }}>
+        {!loaded && (
+          <div style={{
+            position:'absolute', inset:0, display:'flex', alignItems:'center',
+            justifyContent:'center', background:'#111010', color:'var(--fg-mute)',
+            fontSize:13, gap:10,
+          }}>
+            <span style={{ width:16, height:16, borderRadius:99, border:'2px solid var(--fg-mute)', borderTopColor:'var(--accent)', display:'inline-block', animation:'spin 0.8s linear infinite' }}></span>
+            Carregando...
+          </div>
+        )}
+        <iframe
+          src={url}
+          title={title}
+          onLoad={()=>setLoaded(true)}
+          style={{
+            width:'100%', height:420, border:'none', display:'block',
+            background:'#0d0c0b',
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+/* ---------- SCALED PREVIEW (iframe miniaturized in card) ---------- */
+function ScaledPreview({ url, title }){
+  const INNER_W = 1280;
+  const INNER_H = 900;
+  const ref = useRef(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(()=>{
+    if(!ref.current) return;
+    const ro = new ResizeObserver(()=>{
+      if(ref.current) setScale(ref.current.offsetWidth / INNER_W);
+    });
+    ro.observe(ref.current);
+    return ()=>ro.disconnect();
+  },[]);
+
+  return (
+    <div ref={ref} style={{ width:'100%', height:'100%', overflow:'hidden', borderRadius:10, position:'relative' }}>
+      <iframe
+        src={url}
+        title={title}
+        tabIndex={-1}
+        style={{
+          width: INNER_W, height: INNER_H,
+          border:'none', display:'block',
+          transform:`scale(${scale})`,
+          transformOrigin:'top left',
+          pointerEvents:'none',
+        }}
+      />
+    </div>
+  );
+}
+
 /* ---------- PROJECT MODAL ---------- */
 function ProjectModal({ project, onClose }){
   const tones = {
@@ -432,8 +524,10 @@ function ProjectModal({ project, onClose }){
           alignItems:'center', justifyContent:'center', lineHeight:1,
         }}>✕</button>
 
-        {/* image slot */}
-        {project.slot && (
+        {/* live preview or image slot */}
+        {project.liveUrl ? (
+          <BrowserFrame url={project.liveUrl} title={project.title} />
+        ) : project.slot && (
           <div style={{ borderRadius:14, overflow:'hidden', marginBottom:32, height:340 }}>
             <image-slot
               id={`proj-modal-${project.slot}`}
@@ -528,6 +622,7 @@ function Projects(){
             title="Qualyra" subtitle="SaaS de gestão da qualidade — da planilha ao processo rastreável"
             desc="Centraliza não-conformidades com fluxo estruturado, responsabilidades claras e trilha de auditoria completa. Multi-tenant, controle de acesso por papéis e dashboards em tempo real."
             link="https://github.com/uriartegui/qualyra"
+            liveUrl="https://qasystem-mxwhloq50-uriarteguis-projects.vercel.app"
             slot="qualyra"
             preview="img/qualyra.svg"
             features={[
@@ -590,7 +685,7 @@ function Projects(){
   );
 }
 
-function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, features, featured, slot, preview, link, onOpen }){
+function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, features, featured, slot, preview, liveUrl, link, onOpen }){
   const [hover,setHover] = useState(false);
   const tones = {
     'amber':       { bg:'#1F1408', border:'#3a2310', accent:'var(--accent)' },
@@ -601,7 +696,7 @@ function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, fea
   const c = tones[tone] || tones.ink;
 
   const handleClick = ()=>{
-    if(onOpen) onOpen({ tone, year, stack, title, subtitle, desc, features, slot, preview, link });
+    if(onOpen) onOpen({ tone, year, stack, title, subtitle, desc, features, slot, preview, liveUrl, link });
   };
 
   return (
@@ -629,14 +724,17 @@ function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, fea
         </span>
       </div>
 
-      {/* image slot if specified */}
-      {slot && (
+      {/* live preview or image slot */}
+      {(liveUrl || slot) && (
         <div style={{
           position:'absolute', inset: featured ? '90px 36px 130px' : '60px 28px 110px',
           opacity: featured ? .9 : .55,
-          pointerEvents:'none',
+          pointerEvents:'none', borderRadius:10, overflow:'hidden',
         }}>
-          <image-slot id={`proj-${slot}`} src={preview} placeholder={`captura: ${title}`} radius="10" style={{ width:'100%', height:'100%', display:'block' }}></image-slot>
+          {liveUrl
+            ? <ScaledPreview url={liveUrl} title={title} />
+            : <image-slot id={`proj-${slot}`} src={preview} placeholder={`captura: ${title}`} radius="10" style={{ width:'100%', height:'100%', display:'block' }}></image-slot>
+          }
         </div>
       )}
 
