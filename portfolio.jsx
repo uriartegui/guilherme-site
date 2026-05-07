@@ -749,16 +749,6 @@ function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, fea
         </span>
       </div>
 
-      {/* preview */}
-      {slot && (
-        <div style={{
-          position:'absolute', inset: featured ? '90px 36px 130px' : '60px 28px 110px',
-          opacity: featured ? .9 : .55,
-          pointerEvents:'none',
-        }}>
-          <image-slot id={`proj-${slot}`} src={preview} placeholder={`captura: ${title}`} radius="10" style={{ width:'100%', height:'100%', display:'block' }}></image-slot>
-        </div>
-      )}
 
       {/* title block */}
       <div style={{ position:'relative', zIndex:2 }}>
