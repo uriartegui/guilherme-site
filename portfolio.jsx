@@ -686,6 +686,22 @@ function Projects(){
             ]}
             onOpen={setActive}
           />
+          <ProjectCard
+            span="span 6" rows="span 1"
+            tone="ink"
+            year="2025" stack="Python · FastAPI · Groq · Evolution API"
+            title="Agente de Locação IA" subtitle="Sistema white-label de atendimento via WhatsApp para locadoras de equipamentos"
+            desc="Automatiza orçamento, coleta de dados e confirmação de pedidos direto no WhatsApp. Pronto para qualquer locadora — configurável por catálogo, sem desenvolvimento extra."
+            arch="FastAPI → Groq llama-3.3-70b (tool calling) → Evolution API (WhatsApp) · sessões persistidas em JSON"
+            features={[
+              'Catálogo configurável por locadora — preços e equipamentos editáveis sem tocar no código',
+              'Tool calling estruturado para cálculo de orçamento por faixa (diária / semanal / mensal)',
+              'Gestão de sessões por número de telefone — contexto preservado entre mensagens',
+              'Webhook duplo: Evolution API (WhatsApp Business) + Kommo CRM para gestão de leads',
+              'Dashboard admin para listagem, filtragem e atualização de status dos pedidos',
+            ]}
+            onOpen={setActive}
+          />
         </div>
       </div>
     </section>
