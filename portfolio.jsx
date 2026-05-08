@@ -468,6 +468,17 @@ function ProjectModal({ project, onClose }){
           <div style={{ marginBottom:36 }}>
             <project.demo />
           </div>
+        ) : project.iframeUrl ? (
+          <div style={{ borderRadius:14, overflow:'hidden', marginBottom:36, height:420, border:'1px solid var(--line)' }}>
+            <iframe
+              src={project.iframeUrl}
+              title={project.title}
+              width="100%"
+              height="100%"
+              style={{ border:0, display:'block' }}
+              loading="lazy"
+            />
+          </div>
         ) : project.slot && (
           <div style={{ borderRadius:14, overflow:'hidden', marginBottom:36, height:340 }}>
             <image-slot
@@ -713,6 +724,7 @@ function Projects(){
             slot="hominum"
             link="https://hominum-site.vercel.app"
             linkLabel="Ver site ao vivo →"
+            iframeUrl="https://hominum-site.vercel.app"
             arch="React 18 (Vite) → React Router DOM v6 → Tailwind CSS → Vercel (SPA rewrite)"
             features={[
               'Todas as rotas funcionando: 8 marcas representadas, 4 serviços, biblioteca e sobre',
@@ -729,7 +741,7 @@ function Projects(){
   );
 }
 
-function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, features, arch, featured, slot, preview, demo, link, linkLabel, onOpen }){
+function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, features, arch, featured, slot, preview, demo, link, linkLabel, iframeUrl, onOpen }){
   const [hover,setHover] = useState(false);
   const tones = {
     'amber':       { bg:'#1F1408', border:'#3a2310', accent:'var(--accent)' },
@@ -740,7 +752,7 @@ function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, fea
   const c = tones[tone] || tones.ink;
 
   const handleClick = ()=>{
-    if(onOpen) onOpen({ tone, year, stack, title, subtitle, desc, features, arch, slot, preview, demo, link, linkLabel });
+    if(onOpen) onOpen({ tone, year, stack, title, subtitle, desc, features, arch, slot, preview, demo, link, linkLabel, iframeUrl });
   };
 
   return (
