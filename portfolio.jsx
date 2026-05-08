@@ -557,7 +557,7 @@ function ProjectModal({ project, onClose }){
               onMouseEnter={e=>e.currentTarget.style.background='rgba(255,255,255,.05)'}
               onMouseLeave={e=>e.currentTarget.style.background='transparent'}
             >
-              Ver no GitHub →
+              {project.linkLabel || 'Ver no GitHub →'}
             </a>
           )}
           <span style={{ fontSize:12, color:'var(--fg-mute)' }}>
@@ -704,13 +704,32 @@ function Projects(){
             ]}
             onOpen={setActive}
           />
+          <ProjectCard
+            span="span 6" rows="span 1"
+            tone="warm"
+            year="2026" stack="React 18 · Vite · Tailwind CSS · Framer Motion · Vercel"
+            title="Hominum Saúde" subtitle="Site institucional para distribuidora de equipamentos médico-hospitalares"
+            desc="Modernização completa do site — todas as páginas funcionando, catálogo de 8 marcas, seções de serviços, mapa de localização e formulário de contato. Projeto real, entregue via pitch presencial."
+            slot="hominum"
+            link="https://hominum-site.vercel.app"
+            linkLabel="Ver site ao vivo →"
+            arch="React 18 (Vite) → React Router DOM v6 → Tailwind CSS → Vercel (SPA rewrite)"
+            features={[
+              'Todas as rotas funcionando: 8 marcas representadas, 4 serviços, biblioteca e sobre',
+              'Navbar com dropdowns animados (Framer Motion AnimatePresence) e drawer mobile',
+              'Seção de localização com Google Maps embed e cards de contato',
+              'Animações de entrada com Framer Motion e scroll-reveal via IntersectionObserver',
+              'Deploy no Vercel com vercel.json para SPA routing correto em produção',
+            ]}
+            onOpen={setActive}
+          />
         </div>
       </div>
     </section>
   );
 }
 
-function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, features, arch, featured, slot, preview, demo, link, onOpen }){
+function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, features, arch, featured, slot, preview, demo, link, linkLabel, onOpen }){
   const [hover,setHover] = useState(false);
   const tones = {
     'amber':       { bg:'#1F1408', border:'#3a2310', accent:'var(--accent)' },
@@ -721,7 +740,7 @@ function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, fea
   const c = tones[tone] || tones.ink;
 
   const handleClick = ()=>{
-    if(onOpen) onOpen({ tone, year, stack, title, subtitle, desc, features, arch, slot, preview, demo, link });
+    if(onOpen) onOpen({ tone, year, stack, title, subtitle, desc, features, arch, slot, preview, demo, link, linkLabel });
   };
 
   return (

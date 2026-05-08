@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <rect width="800" height="450" fill="#041D42"/>
+  <rect x="0" y="0" width="800" height="56" fill="#17224D"/>
+  <rect x="32" y="16" width="32" height="32" rx="4" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="38" y="20" width="6" height="20" rx="1" fill="white"/>
+  <rect x="48" y="20" width="6" height="20" rx="1" fill="white"/>
+  <rect x="38" y="28" width="16" height="4" rx="1" fill="white"/>
+  <text x="80" y="38" font-family="system-ui" font-size="14" font-weight="700" fill="white" letter-spacing="2">HOMINUM SAÚDE</text>
+  <text x="420" y="38" font-family="system-ui" font-size="12" fill="rgba(255,255,255,0.6)">Produtos · Serviços · Biblioteca · Sobre</text>
+  <rect x="32" y="88" width="460" height="64" rx="4" fill="none"/>
+  <text x="32" y="118" font-family="system-ui" font-size="36" font-weight="800" fill="white">Excelência em</text>
+  <text x="32" y="158" font-family="system-ui" font-size="36" font-weight="800" fill="rgba(255,255,255,0.7)">Produtos Hospitalares</text>
+  <rect x="32" y="180" width="140" height="40" rx="3" fill="white"/>
+  <text x="72" y="205" font-family="system-ui" font-size="13" font-weight="700" fill="#041D42">Nossos Produtos</text>
+  <rect x="184" y="180" width="120" height="40" rx="3" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  <text x="208" y="205" font-family="system-ui" font-size="13" fill="white">Fale Conosco</text>
+  <rect x="32" y="244" width="120" height="28" rx="14" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <text x="52" y="263" font-family="system-ui" font-size="11" fill="rgba(255,255,255,0.8)">✦ Cert. ANVISA</text>
+  <rect x="164" y="244" width="130" height="28" rx="14" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <text x="180" y="263" font-family="system-ui" font-size="11" fill="rgba(255,255,255,0.8)">⏱ +20 anos mercado</text>
+  <rect x="528" y="80" width="240" height="180" rx="4" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+  <text x="548" y="106" font-family="system-ui" font-size="9" fill="rgba(255,255,255,0.5)" letter-spacing="2">DESTAQUE</text>
+  <text x="548" y="134" font-family="system-ui" font-size="20" font-weight="700" fill="white">Carenet Longevity</text>
+  <text x="548" y="156" font-family="system-ui" font-size="12" fill="rgba(255,255,255,0.6)">Monitorização contínua inteligente</text>
+  <text x="548" y="174" font-family="system-ui" font-size="12" fill="rgba(255,255,255,0.6)">para UTI e home care.</text>
+  <rect x="528" y="290" width="112" height="60" rx="4" fill="#F5F5F5" opacity="0.08"/>
+  <text x="548" y="316" font-family="system-ui" font-size="24" font-weight="800" fill="white">24/7</text>
+  <text x="548" y="336" font-family="system-ui" font-size="10" fill="rgba(255,255,255,0.5)">MONITORIZAÇÃO</text>
+  <rect x="648" y="290" width="120" height="60" rx="4" fill="#F5F5F5" opacity="0.08"/>
+  <text x="660" y="316" font-family="system-ui" font-size="24" font-weight="800" fill="white">+150</text>
+  <text x="660" y="336" font-family="system-ui" font-size="10" fill="rgba(255,255,255,0.5)">HOSPITAIS</text>
+  <rect x="0" y="360" width="800" height="90" fill="rgba(0,0,0,0.3)"/>
+  <rect x="32" y="376" width="160" height="8" rx="4" fill="rgba(255,255,255,0.15)"/>
+  <rect x="32" y="394" width="120" height="8" rx="4" fill="rgba(255,255,255,0.08)"/>
+  <rect x="32" y="410" width="80" height="8" rx="4" fill="rgba(255,255,255,0.08)"/>
+  <rect x="240" y="376" width="100" height="8" rx="4" fill="rgba(255,255,255,0.15)"/>
+  <rect x="240" y="394" width="80" height="8" rx="4" fill="rgba(255,255,255,0.08)"/>
+  <rect x="240" y="410" width="90" height="8" rx="4" fill="rgba(255,255,255,0.08)"/>
+  <rect x="440" y="376" width="100" height="8" rx="4" fill="rgba(255,255,255,0.15)"/>
+  <rect x="440" y="394" width="80" height="8" rx="4" fill="rgba(255,255,255,0.08)"/>
+  <rect x="440" y="410" width="70" height="8" rx="4" fill="rgba(255,255,255,0.08)"/>
+  <rect x="640" y="376" width="120" height="32" rx="4" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+  <text x="660" y="397" font-family="system-ui" font-size="11" fill="rgba(255,255,255,0.5)">seu@email.com</text>
+</svg>
