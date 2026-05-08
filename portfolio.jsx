@@ -433,8 +433,8 @@ function ProjectModal({ project, onClose }){
     }}>
       <div onClick={e=>e.stopPropagation()} style={{
         background:'#141210', border:'1px solid #2a2520',
-        borderRadius:22, padding:40, maxWidth:860, width:'100%',
-        maxHeight:'90vh', overflowY:'auto', position:'relative',
+        borderRadius:22, padding:40, maxWidth:1160, width:'100%',
+        maxHeight:'92vh', overflowY:'auto', position:'relative',
         animation:'slideUp .25s cubic-bezier(.2,.7,.2,1)',
       }}>
 
@@ -469,18 +469,16 @@ function ProjectModal({ project, onClose }){
             <project.demo />
           </div>
         ) : project.iframeUrl ? (
-          <div style={{ borderRadius:14, overflow:'hidden', marginBottom:36, height:420, border:'1px solid var(--line)', position:'relative' }}>
+          <div style={{ borderRadius:14, overflow:'hidden', marginBottom:36, height:560, border:'1px solid var(--line)', position:'relative' }}>
             <iframe
               src={project.iframeUrl}
               title={project.title}
-              width="1280"
-              height="720"
               style={{
                 border:0, display:'block',
                 transformOrigin:'top left',
-                transform:`scale(${820/1280})`,
-                width:1280, height: Math.round(420 / (820/1280)),
-                pointerEvents:'none',
+                transform:'scale(0.84)',
+                width: Math.round(1080/0.84),
+                height: Math.round(560/0.84),
               }}
               loading="lazy"
             />
