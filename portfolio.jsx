@@ -469,13 +469,19 @@ function ProjectModal({ project, onClose }){
             <project.demo />
           </div>
         ) : project.iframeUrl ? (
-          <div style={{ borderRadius:14, overflow:'hidden', marginBottom:36, height:420, border:'1px solid var(--line)' }}>
+          <div style={{ borderRadius:14, overflow:'hidden', marginBottom:36, height:420, border:'1px solid var(--line)', position:'relative' }}>
             <iframe
               src={project.iframeUrl}
               title={project.title}
-              width="100%"
-              height="100%"
-              style={{ border:0, display:'block' }}
+              width="1280"
+              height="720"
+              style={{
+                border:0, display:'block',
+                transformOrigin:'top left',
+                transform:`scale(${820/1280})`,
+                width:1280, height: Math.round(420 / (820/1280)),
+                pointerEvents:'none',
+              }}
               loading="lazy"
             />
           </div>
