@@ -610,7 +610,7 @@ function Projects(){
         <div style={{
           display:'grid',
           gridTemplateColumns:'repeat(6, 1fr)',
-          gridAutoRows:'200px',
+          gridAutoRows:'minmax(200px, auto)',
           gap:16,
         }}>
           <ProjectCard
