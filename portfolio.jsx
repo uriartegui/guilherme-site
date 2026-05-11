@@ -49,6 +49,16 @@ function useCountUp(target, trigger){
   return val;
 }
 
+function useMobile(bp = 768){
+  const [m, setM] = useState(()=> window.innerWidth <= bp);
+  useEffect(()=>{
+    const fn = ()=> setM(window.innerWidth <= bp);
+    window.addEventListener('resize', fn, { passive:true });
+    return ()=> window.removeEventListener('resize', fn);
+  },[bp]);
+  return m;
+}
+
 /* ---------- MARQUEE STRIP ---------- */
 function Marquee({ items, speed = 38, reverse = false }){
   const doubled = [...items, ...items];
@@ -181,6 +191,7 @@ function ScrollProgress(){
 function Nav({ onContact }){
   const y = useScrollY();
   const scrolled = y > 40;
+  const mobile = useMobile();
   const [open,setOpen] = useState(false);
   const [clock,setClock] = useState('');
   const btnRef = useRef(null);
@@ -224,7 +235,7 @@ function Nav({ onContact }){
   return (
     <header style={{
       position:'fixed', top:0, left:0, right:0, zIndex:50,
-      padding: scrolled ? '14px 32px' : '24px 32px',
+      padding: scrolled ? (mobile ? '12px 16px' : '14px 32px') : (mobile ? '18px 16px' : '24px 32px'),
       transition:'padding .35s ease, background .35s ease, backdrop-filter .35s ease, border-color .35s ease',
       background: scrolled ? 'rgba(10,9,8,.72)' : 'transparent',
       backdropFilter: scrolled ? 'saturate(160%) blur(18px)' : 'none',
@@ -287,6 +298,7 @@ function Nav({ onContact }){
 
 /* ---------- HERO ---------- */
 function Hero(){
+  const mobile = useMobile();
   const heroWords = ["Construo", "produtos", "digitais", "com", "código", "preciso"];
   const [revealed, setRevealed] = useState(0);
   const [showCursor, setShowCursor] = useState(true);
@@ -310,7 +322,7 @@ function Hero(){
   return (
     <section id="top" style={{
       minHeight:'100vh', position:'relative',
-      padding:'140px 32px 80px',
+      padding: mobile ? '100px 20px 60px' : '140px 32px 80px',
       display:'flex', flexDirection:'column', justifyContent:'space-between',
     }}>
       {/* Aurora background — top-left like Augen */}
@@ -400,7 +412,7 @@ function Hero(){
       </div>
 
       {/* hero-bottom metadata row */}
-      <div style={{ maxWidth:1440, margin:'0 auto', width:'100%', borderTop:'1px solid var(--line)', paddingTop:28, display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:32 }}>
+      <div style={{ maxWidth:1440, margin:'0 auto', width:'100%', borderTop:'1px solid var(--line)', paddingTop:28, display:'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(3,1fr)', gap: mobile ? 20 : 32 }}>
         {[
           ['[ ROLE ]','Senior Fullstack Engineer\nReact · Next.js · Node · Spring Boot'],
           ['[ FOCO ]','Interfaces editoriais, SaaS B2B,\nplataformas de IA e automação'],
@@ -418,6 +430,7 @@ function Hero(){
 
 /* ---------- ABOUT ---------- */
 function About(){
+  const mobile = useMobile();
   const ref = useRef(null);
   const [trigger, setTrigger] = useState(false);
   useEffect(()=>{
@@ -434,12 +447,12 @@ function About(){
   const platforms = useCountUp(8, trigger);
 
   return (
-    <section id="about" ref={ref} style={{ padding:'180px 32px 160px', position:'relative' }}>
+    <section id="about" ref={ref} style={{ padding: mobile ? '80px 20px 60px' : '180px 32px 160px', position:'relative' }}>
       <div style={{ maxWidth:1440, margin:'0 auto' }}>
         {/* Section label */}
         <SectionLabel num="01" label="Sobre" aside="BIOGRAFIA · 2026" />
 
-        <div style={{ display:'grid', gridTemplateColumns:'1.2fr 1fr', gap:'min(10vw, 140px)', marginTop:80, alignItems:'start' }}>
+        <div style={{ display:'grid', gridTemplateColumns: mobile ? '1fr' : '1.2fr 1fr', gap: mobile ? 40 : 'min(10vw, 140px)', marginTop: mobile ? 40 : 80, alignItems:'start' }}>
           {/* Left: bold quote + photo */}
           <div className="reveal">
             <blockquote style={{
@@ -502,6 +515,7 @@ function About(){
 
 /* ---------- SERVICES ---------- */
 function Services(){
+  const mobile = useMobile();
   const items = [
     {
       n:'i', title:'Sites & Landing Pages',
@@ -521,11 +535,11 @@ function Services(){
   ];
 
   return (
-    <section id="services" style={{ padding:'160px 32px 160px', background:'var(--bg-2)', borderTop:'1px solid var(--line)', borderBottom:'1px solid var(--line)' }}>
+    <section id="services" style={{ padding: mobile ? '80px 20px 60px' : '160px 32px 160px', background:'var(--bg-2)', borderTop:'1px solid var(--line)', borderBottom:'1px solid var(--line)' }}>
       <div style={{ maxWidth:1440, margin:'0 auto' }}>
         <SectionLabel num="02" label="Serviços" aside="O QUE EU FAÇO" />
 
-        <div className="reveal" style={{ marginTop:48, display:'grid', gridTemplateColumns:'1.2fr 1fr', gap:64, alignItems:'end', marginBottom:80 }}>
+        <div className="reveal" style={{ marginTop:48, display:'grid', gridTemplateColumns: mobile ? '1fr' : '1.2fr 1fr', gap: mobile ? 24 : 64, alignItems:'end', marginBottom: mobile ? 40 : 80 }}>
           <h2 className="gsap-title" style={{ fontSize:'clamp(40px, 5.2vw, 72px)', lineHeight:1, letterSpacing:'-.04em', fontWeight:600 }}>
             O que entrego, em <span style={{ color:'var(--accent)' }}>três</span> formatos.
           </h2>
@@ -534,7 +548,7 @@ function Services(){
           </p>
         </div>
 
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:1, background:'var(--line)', border:'1px solid var(--line)', borderRadius:18, overflow:'hidden' }}>
+        <div style={{ display:'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(3, 1fr)', gap:1, background:'var(--line)', border:'1px solid var(--line)', borderRadius:18, overflow:'hidden' }}>
           {items.map((it,i)=>(
             <ServiceCard key={i} {...it} delay={i} />
           ))}
@@ -592,6 +606,7 @@ function ServiceCard({ n, title, desc, tags, delay }){
 
 /* ---------- PROJECT MODAL ---------- */
 function ProjectModal({ project, onClose }){
+  const mobile = useMobile();
   const tones = {
     'amber':     { accent:'var(--accent)',  tag:'rgba(245,158,11,.12)', tagBorder:'rgba(245,158,11,.25)' },
     'amber-dim': { accent:'#FB923C',        tag:'rgba(251,146,60,.1)',  tagBorder:'rgba(251,146,60,.2)'  },
@@ -628,13 +643,17 @@ function ProjectModal({ project, onClose }){
     <div onClick={onClose} style={{
       position:'fixed', inset:0, zIndex:1000,
       background:'rgba(0,0,0,0.82)', backdropFilter:'blur(14px)',
-      display:'flex', alignItems:'center', justifyContent:'center',
-      padding:24, animation:'fadeIn .2s ease',
+      display:'flex', alignItems: mobile ? 'flex-end' : 'center', justifyContent:'center',
+      padding: mobile ? 0 : 24, animation:'fadeIn .2s ease',
     }}>
       <div onClick={e=>e.stopPropagation()} style={{
-        background:'#141210', border:'1px solid #2a2520',
-        borderRadius:22, padding:40, maxWidth:1160, width:'100%',
-        maxHeight:'92vh', overflowY:'auto', position:'relative',
+        background:'#141210', border: mobile ? 'none' : '1px solid #2a2520',
+        borderRadius: mobile ? '18px 18px 0 0' : 22,
+        padding: mobile ? '20px 16px 32px' : 40,
+        maxWidth:1160, width:'100%',
+        maxHeight: mobile ? '94vh' : '92vh',
+        overflowY:'auto', position:'relative',
+        marginTop: mobile ? 'auto' : 0,
         animation:'slideUp .25s cubic-bezier(.2,.7,.2,1)',
       }}>
 
@@ -650,17 +669,17 @@ function ProjectModal({ project, onClose }){
         {/* demo notice */}
         <div style={{
           display:'flex', alignItems:'center', gap:10, flexWrap:'wrap',
-          marginBottom:28, padding:'9px 16px',
+          marginBottom: mobile ? 20 : 28, padding:'9px 16px',
           background:'rgba(245,158,11,.05)', border:'1px solid rgba(245,158,11,.14)',
           borderRadius:10,
         }}>
           <span style={{ color:'var(--accent)', fontSize:11 }}>✦</span>
           <span className="mono" style={{ fontSize:11, color:'var(--fg-dim)', letterSpacing:'.04em' }}>
-            demonstração interativa — prévia simplificada do sistema
+            {mobile ? 'prévia simplificada' : 'demonstração interativa — prévia simplificada do sistema'}
           </span>
-          <span style={{ marginLeft:'auto', fontSize:11, color:'var(--fg-mute)' }}>
+          {!mobile && <span style={{ marginLeft:'auto', fontSize:11, color:'var(--fg-mute)' }}>
             sistema completo disponível mediante contato
-          </span>
+          </span>}
         </div>
 
         {/* interactive demo or static preview */}
@@ -669,20 +688,26 @@ function ProjectModal({ project, onClose }){
             <project.demo />
           </div>
         ) : project.iframeUrl ? (
-          <div style={{ borderRadius:14, overflow:'hidden', marginBottom:36, height:560, border:'1px solid var(--line)', position:'relative' }}>
-            <iframe
-              src={project.iframeUrl}
-              title={project.title}
-              style={{
-                border:0, display:'block',
-                transformOrigin:'top left',
-                transform:'scale(0.84)',
-                width: Math.round(1080/0.84),
-                height: Math.round(560/0.84),
-              }}
-              loading="lazy"
-            />
-          </div>
+          (() => {
+            const iframeH = mobile ? 240 : 560;
+            const iframeScale = mobile ? parseFloat(((window.innerWidth - 32) / 1080).toFixed(3)) : 0.84;
+            return (
+              <div style={{ borderRadius:14, overflow:'hidden', marginBottom: mobile ? 20 : 36, height:iframeH, border:'1px solid var(--line)', position:'relative' }}>
+                <iframe
+                  src={project.iframeUrl}
+                  title={project.title}
+                  style={{
+                    border:0, display:'block',
+                    transformOrigin:'top left',
+                    transform:`scale(${iframeScale})`,
+                    width: mobile ? 1080 : Math.round(1080/0.84),
+                    height: Math.round(iframeH / iframeScale),
+                  }}
+                  loading="lazy"
+                />
+              </div>
+            );
+          })()
         ) : project.slot && (
           <div style={{ borderRadius:14, overflow:'hidden', marginBottom:36, height:340 }}>
             <image-slot
@@ -743,7 +768,7 @@ function ProjectModal({ project, onClose }){
         {project.features && (
           <div style={{ marginBottom:28 }}>
             <SectionLabel>Destaques técnicos</SectionLabel>
-            <ul style={{ listStyle:'none', display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))', gap:10 }}>
+            <ul style={{ listStyle:'none', display:'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(auto-fill, minmax(280px, 1fr))', gap:10 }}>
               {project.features.map((f,i)=>(
                 <li key={i} style={{
                   display:'flex', alignItems:'flex-start', gap:10,
@@ -787,10 +812,11 @@ function ProjectModal({ project, onClose }){
 
 /* ---------- PROJECTS (Bento) ---------- */
 function Projects(){
+  const mobile = useMobile();
   const [active, setActive] = useState(null);
 
   return (
-    <section id="projects" style={{ padding:'180px 32px 160px' }}>
+    <section id="projects" style={{ padding: mobile ? '80px 20px 60px' : '180px 32px 160px' }}>
       {active && <ProjectModal project={active} onClose={()=>setActive(null)} />}
 
       <div style={{ maxWidth:1440, margin:'0 auto' }}>
@@ -812,7 +838,7 @@ function Projects(){
             01 — Produtos SaaS
           </span>
         </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(6, 1fr)', gridAutoRows:'minmax(200px, auto)', gap:16, marginBottom:56 }}>
+        <div style={{ display:'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(6, 1fr)', gridAutoRows:'minmax(200px, auto)', gap:16, marginBottom: mobile ? 32 : 56 }}>
           <ProjectCard
             span="span 4 / span 4" rows="span 2"
             tone="amber" featured
@@ -891,7 +917,7 @@ function Projects(){
             02 — AI / Automação
           </span>
         </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(6, 1fr)', gridAutoRows:'minmax(200px, auto)', gap:16, marginBottom:56 }}>
+        <div style={{ display:'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(6, 1fr)', gridAutoRows:'minmax(200px, auto)', gap:16, marginBottom: mobile ? 32 : 56 }}>
           <ProjectCard
             span="span 2" rows="span 1"
             tone="ink"
@@ -936,7 +962,7 @@ function Projects(){
             03 — Sites / Cliente
           </span>
         </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(6, 1fr)', gridAutoRows:'minmax(200px, auto)', gap:16 }}>
+        <div style={{ display:'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(6, 1fr)', gridAutoRows:'minmax(200px, auto)', gap:16 }}>
           <ProjectCard
             span="span 4" rows="span 1"
             tone="warm"
@@ -1023,6 +1049,7 @@ function Projects(){
 const CARD_ARTS = { amber:'card-art-1', 'amber-dim':'card-art-4', ink:'card-art-6', warm:'card-art-3' };
 
 function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, features, arch, featured, slot, preview, demo, link, linkLabel, iframeUrl, onOpen, artOverride }){
+  const mobile = useMobile();
   const [hover,setHover] = useState(false);
   const cardRef = useRef(null);
   const rafRef = useRef(null);
@@ -1078,9 +1105,9 @@ function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, fea
       onMouseLeave={onMouseLeave}
       onClick={handleClick}
       style={{
-        gridColumn: span, gridRow: rows,
+        gridColumn: mobile ? 'span 1' : span, gridRow: mobile ? 'span 1' : rows,
         background: c.bg, border:`1px solid ${hover ? 'rgba(237,234,227,.18)' : c.border}`,
-        borderRadius:18, padding: featured ? '36px' : '28px',
+        borderRadius:18, padding: featured ? (mobile ? '24px' : '36px') : '28px',
         position:'relative', overflow:'hidden',
         display:'flex', flexDirection:'column', justifyContent:'space-between',
         transformStyle:'preserve-3d', willChange:'transform',
@@ -1104,7 +1131,7 @@ function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, fea
       {/* title block */}
       <div style={{ position:'relative', zIndex:2 }}>
         <h3 style={{
-          fontSize: featured ? 44 : 24,
+          fontSize: featured ? (mobile ? 28 : 44) : 24,
           lineHeight:1.05, letterSpacing:'-.03em', fontWeight:600,
           marginBottom:6, color:'var(--fg)',
         }}>
@@ -1146,6 +1173,7 @@ function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, fea
 
 /* ---------- SKILLS ---------- */
 function Skills(){
+  const mobile = useMobile();
   const groups = [
     { label:'Linguagens', items:[
       { name:'TypeScript', level:95 },
@@ -1172,7 +1200,7 @@ function Skills(){
   const tags = ['Claude API','Groq','Robot Framework','Playwright','Z-API','Stripe','Resend','Tailwind CSS','Prisma','Drizzle','Auth.js','Supabase Auth','GitHub Actions','Figma','Zod','tRPC','Vitest','OpenAI API','Vercel AI SDK','Sanity','Framer Motion','PNPM'];
 
   return (
-    <section id="skills" style={{ padding:'180px 32px 160px', background:'var(--bg-2)', borderTop:'1px solid var(--line)', borderBottom:'1px solid var(--line)' }}>
+    <section id="skills" style={{ padding: mobile ? '80px 20px 60px' : '180px 32px 160px', background:'var(--bg-2)', borderTop:'1px solid var(--line)', borderBottom:'1px solid var(--line)' }}>
       <div style={{ maxWidth:1440, margin:'0 auto' }}>
         <SectionLabel num="04" label="Stack técnica" aside="FERRAMENTAS · 2026" />
 
@@ -1186,7 +1214,7 @@ function Skills(){
         </div>
 
         {/* Three columns */}
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:64 }}>
+        <div style={{ display:'grid', gridTemplateColumns: mobile ? '1fr' : 'repeat(3, 1fr)', gap: mobile ? 40 : 64 }}>
           {groups.map((g,gi)=>(
             <div key={gi} className={`reveal d${gi+1}`}>
               <div className="mono" style={{ fontSize:11, color:'var(--fg-mute)', letterSpacing:'.12em', textTransform:'uppercase', marginBottom:24, paddingBottom:12, borderBottom:'1px solid var(--line)' }}>
@@ -1258,6 +1286,7 @@ function SkillBar({ name, level }){
 
 /* ---------- CONTACT ---------- */
 function Contact({ formRef }){
+  const mobile = useMobile();
   const [state,setState] = useState({ name:'', email:'', phone:'', message:'', budget:'' });
   const [errors,setErrors] = useState({});
   const [sent,setSent] = useState(false);
@@ -1296,7 +1325,7 @@ function Contact({ formRef }){
   };
 
   return (
-    <section id="contact" ref={formRef} style={{ padding:'200px 32px 120px', position:'relative' }}>
+    <section id="contact" ref={formRef} style={{ padding: mobile ? '80px 20px 60px' : '200px 32px 120px', position:'relative' }}>
       <div style={{ maxWidth:1440, margin:'0 auto' }}>
         <SectionLabel num="05" label="Contato" aside="VAMOS CONVERSAR" />
 
@@ -1309,8 +1338,8 @@ function Contact({ formRef }){
         </h2>
 
         <div className="reveal d2" style={{
-          marginTop:80, display:'grid', gridTemplateColumns:'1fr 1.4fr',
-          gap:'min(8vw, 120px)',
+          marginTop: mobile ? 40 : 80, display:'grid', gridTemplateColumns: mobile ? '1fr' : '1fr 1.4fr',
+          gap: mobile ? 40 : 'min(8vw, 120px)',
         }}>
           {/* Left: links */}
           <div>
