@@ -73,6 +73,50 @@ function App(){
     ` : '';
   },[tweaks.headingScale]);
 
+  // GSAP ScrollTrigger animations
+  useEffect(()=>{
+    if(typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    if(!tweaks.motion) return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Hero parallax — headline e sub deslocam enquanto saem da tela
+    gsap.to('#heroH1', {
+      yPercent: -22, ease:'none',
+      scrollTrigger:{ trigger:'#top', start:'top top', end:'bottom top', scrub:1.2 },
+    });
+    gsap.to('#top .hero-sub', {
+      yPercent: -12, opacity:0, ease:'none',
+      scrollTrigger:{ trigger:'#top', start:'30% top', end:'bottom top', scrub:1 },
+    });
+
+    // Aurora blob parallax
+    const b1 = document.getElementById('hero-blob1');
+    const b2 = document.getElementById('hero-blob2');
+    const b3 = document.getElementById('hero-blob3');
+    if(b1) gsap.to(b1,{ yPercent:30, ease:'none', scrollTrigger:{ trigger:'#top', start:'top top', end:'bottom top', scrub:true }});
+    if(b2) gsap.to(b2,{ yPercent:-25, ease:'none', scrollTrigger:{ trigger:'#top', start:'top top', end:'bottom top', scrub:true }});
+    if(b3) gsap.to(b3,{ yPercent:50, xPercent:-20, ease:'none', scrollTrigger:{ trigger:'#top', start:'top top', end:'bottom top', scrub:true }});
+
+    // Section labels entram com clip horizontal
+    gsap.utils.toArray('.gsap-label').forEach(el=>{
+      gsap.from(el, {
+        clipPath:'inset(0 100% 0 0)', opacity:0, duration:1,
+        ease:'power3.out',
+        scrollTrigger:{ trigger:el, start:'top 88%', toggleActions:'play none none none' },
+      });
+    });
+
+    // Section h2 com stagger de palavras
+    gsap.utils.toArray('.gsap-title').forEach(el=>{
+      gsap.from(el, {
+        y:60, opacity:0, duration:1.1, ease:'power4.out',
+        scrollTrigger:{ trigger:el, start:'top 85%', toggleActions:'play none none none' },
+      });
+    });
+
+    return ()=>{ ScrollTrigger.getAll().forEach(t=>t.kill()); };
+  },[tweaks.motion]);
+
   // Reveal-on-scroll observer (re-runs as new sections mount)
   useEffect(()=>{
     if(!tweaks.motion) {
@@ -96,12 +140,18 @@ function App(){
 
   return (
     <>
+      <CustomCursor />
+      <ScrollProgress />
       <Nav onContact={goContact} />
       <main>
         <Hero />
+        <Marquee items={['Fullstack Developer','Brasil','2026','Disponível','Código Preciso','Produto que Funciona']} speed={40} />
         <About />
+        <Marquee items={['Sites & Apps','APIs & Sistemas','IA & Automação','React','Next.js','Node.js','FastAPI','Flutter']} speed={34} reverse />
         <Services />
+        <Marquee items={['Projetos Selecionados','Startups','SaaS','Apps Mobile','Agentes IA','WhatsApp','Fintech','Healthtech']} speed={42} />
         <Projects />
+        <Marquee items={['TypeScript','Next.js','PostgreSQL','Supabase','Docker','Vercel','Claude API','Groq','Spring Boot','Flutter']} speed={36} reverse />
         <Skills />
         <Contact formRef={formRef} />
       </main>

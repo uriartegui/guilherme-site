@@ -49,17 +49,176 @@ function useCountUp(target, trigger){
   return val;
 }
 
+/* ---------- MARQUEE STRIP ---------- */
+function Marquee({ items, speed = 38, reverse = false }){
+  const doubled = [...items, ...items];
+  return (
+    <div style={{
+      overflow:'hidden',
+      borderTop:'1px solid var(--line)', borderBottom:'1px solid var(--line)',
+      padding:'13px 0', background:'var(--bg)',
+    }}>
+      <div style={{
+        display:'flex', whiteSpace:'nowrap',
+        animation:`${reverse ? 'marquee-rev' : 'marquee-fwd'} ${speed}s linear infinite`,
+      }}>
+        {doubled.map((item,i)=>(
+          <span key={i} className="mono" style={{
+            display:'inline-flex', alignItems:'center', gap:28,
+            fontSize:11, letterSpacing:'.2em', textTransform:'uppercase',
+            color:'var(--fg-mute)', padding:'0 28px',
+          }}>
+            {item}
+            <span style={{ width:3, height:3, borderRadius:'50%', background:'var(--accent)', flexShrink:0 }}/>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ---------- CUSTOM CURSOR ---------- */
+function CustomCursor(){
+  const dotRef = useRef(null);
+  const ringRef = useRef(null);
+
+  useEffect(()=>{
+    if(window.matchMedia('(pointer: coarse)').matches) return;
+    if(document.body.classList.contains('no-motion')) return;
+
+    document.body.classList.add('has-custom-cursor');
+
+    let mx = window.innerWidth/2, my = window.innerHeight/2;
+    let rx = mx, ry = my;
+    let raf;
+
+    const onMove = (e)=>{
+      mx = e.clientX; my = e.clientY;
+      if(dotRef.current)
+        dotRef.current.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
+    };
+
+    const onOver = (e)=>{
+      const over = !!e.target.closest('a,button,[role="button"],input,textarea,select');
+      if(ringRef.current){
+        ringRef.current.style.width  = over ? '56px' : '36px';
+        ringRef.current.style.height = over ? '56px' : '36px';
+        ringRef.current.style.borderColor = over ? 'rgba(245,158,11,.9)' : 'rgba(245,158,11,.5)';
+        ringRef.current.style.background   = over ? 'rgba(245,158,11,.06)' : 'transparent';
+      }
+      if(dotRef.current) dotRef.current.style.opacity = over ? '0' : '1';
+    };
+
+    const tick = ()=>{
+      rx += (mx - rx) * 0.16;
+      ry += (my - ry) * 0.16;
+      if(ringRef.current)
+        ringRef.current.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+      raf = requestAnimationFrame(tick);
+    };
+
+    window.addEventListener('mousemove', onMove, { passive:true });
+    window.addEventListener('mouseover', onOver, { passive:true });
+    raf = requestAnimationFrame(tick);
+
+    return ()=>{
+      document.body.classList.remove('has-custom-cursor');
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseover', onOver);
+      cancelAnimationFrame(raf);
+    };
+  },[]);
+
+  return (
+    <>
+      <div ref={dotRef} style={{
+        position:'fixed', top:0, left:0, zIndex:10000,
+        width:6, height:6, borderRadius:'50%',
+        background:'var(--accent)', pointerEvents:'none',
+        boxShadow:'0 0 12px rgba(245,158,11,.6)',
+        willChange:'transform', transition:'opacity .15s',
+        transform:`translate(${typeof window!=='undefined'?window.innerWidth/2:0}px,${typeof window!=='undefined'?window.innerHeight/2:0}px) translate(-50%,-50%)`,
+      }}/>
+      <div ref={ringRef} className="cursor-ring-el" style={{
+        position:'fixed', top:0, left:0, zIndex:9999,
+        width:36, height:36, borderRadius:'50%',
+        border:'1px solid rgba(245,158,11,.5)',
+        pointerEvents:'none', willChange:'transform',
+        mixBlendMode:'difference',
+        transition:'width .22s ease, height .22s ease, border-color .22s ease, background .22s ease',
+      }}/>
+    </>
+  );
+}
+
+/* ---------- SCROLL PROGRESS ---------- */
+function ScrollProgress(){
+  const barRef = useRef(null);
+
+  useEffect(()=>{
+    const update = ()=>{
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+      if(barRef.current) barRef.current.style.width = pct + '%';
+    };
+    window.addEventListener('scroll', update, { passive:true });
+    return ()=> window.removeEventListener('scroll', update);
+  },[]);
+
+  return (
+    <div style={{ position:'fixed', top:0, left:0, right:0, height:2, zIndex:200, background:'rgba(255,255,255,.04)' }}>
+      <div ref={barRef} style={{
+        height:'100%', width:'0%',
+        background:'var(--accent)',
+        boxShadow:'0 0 8px var(--accent), 0 0 18px rgba(245,158,11,.4)',
+        transition:'width .08s linear',
+      }}/>
+    </div>
+  );
+}
+
 /* ---------- NAV ---------- */
 function Nav({ onContact }){
   const y = useScrollY();
   const scrolled = y > 40;
   const [open,setOpen] = useState(false);
+  const [clock,setClock] = useState('');
+  const btnRef = useRef(null);
+
+  useEffect(()=>{
+    const tick = ()=>{
+      const d = new Date();
+      const h = String(d.getHours()).padStart(2,'0');
+      const m = String(d.getMinutes()).padStart(2,'0');
+      const s = String(d.getSeconds()).padStart(2,'0');
+      setClock(`${h}:${m}:${s} BRT`);
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return ()=> clearInterval(id);
+  },[]);
 
   const linkTo = (id)=> (e)=>{
     e.preventDefault();
     const el = document.getElementById(id);
     if(el) el.scrollIntoView({ behavior:'smooth', block:'start' });
     setOpen(false);
+  };
+
+  const onBtnMove = (e)=>{
+    const btn = btnRef.current;
+    if(!btn || document.body.classList.contains('no-motion')) return;
+    const r = btn.getBoundingClientRect();
+    const x = (e.clientX - r.left - r.width/2) * 0.28;
+    const y = (e.clientY - r.top  - r.height/2) * 0.28;
+    btn.style.transform = `translate(${x}px,${y}px)`;
+    btn.style.boxShadow = '0 10px 32px -8px rgba(245,158,11,.75)';
+  };
+  const onBtnLeave = ()=>{
+    const btn = btnRef.current;
+    if(!btn) return;
+    btn.style.transform = 'none';
+    btn.style.boxShadow = 'none';
   };
 
   return (
@@ -103,15 +262,22 @@ function Nav({ onContact }){
           ))}
         </nav>
 
+        {/* Clock */}
+        {clock && (
+          <span className="mono nav-clock" style={{ fontSize:11, letterSpacing:'.16em', color:'var(--fg-mute)', textTransform:'uppercase' }}>
+            {clock}
+          </span>
+        )}
+
         {/* CTA */}
-        <button onClick={onContact} style={{
+        <button ref={btnRef} onClick={onContact} style={{
           padding:'10px 20px', borderRadius:99,
           background:'var(--accent)', color:'#0A0908',
           fontSize:14, fontWeight:600, letterSpacing:'-.005em',
-          transition:'transform .2s, box-shadow .2s',
+          transition:'transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s',
         }}
-        onMouseEnter={e=>{ e.currentTarget.style.transform='translateY(-1px)'; e.currentTarget.style.boxShadow='0 8px 28px -8px rgba(245,158,11,.7)'; }}
-        onMouseLeave={e=>{ e.currentTarget.style.transform='none'; e.currentTarget.style.boxShadow='none'; }}>
+        onMouseMove={onBtnMove}
+        onMouseLeave={onBtnLeave}>
           Contratar
         </button>
       </div>
@@ -147,6 +313,28 @@ function Hero(){
       padding:'140px 32px 80px',
       display:'flex', flexDirection:'column', justifyContent:'space-between',
     }}>
+      {/* Aurora background — top-left like Augen */}
+      <div aria-hidden="true" style={{ position:'absolute', inset:0, overflow:'hidden', pointerEvents:'none' }}>
+        <div id="hero-blob1" style={{
+          position:'absolute', top:'-10%', left:'-8%',
+          width:720, height:720, borderRadius:'50%',
+          background:'radial-gradient(circle, rgba(245,158,11,.85), transparent 70%)',
+          filter:'blur(120px)', opacity:.5, willChange:'transform',
+        }}/>
+        <div id="hero-blob2" style={{
+          position:'absolute', bottom:'-10%', right:'-6%',
+          width:560, height:560, borderRadius:'50%',
+          background:'radial-gradient(circle, rgba(245,158,11,.4), transparent 70%)',
+          filter:'blur(120px)', opacity:.35, willChange:'transform',
+        }}/>
+        <div id="hero-blob3" style={{
+          position:'absolute', top:'30%', left:'38%',
+          width:380, height:380, borderRadius:'50%',
+          background:'radial-gradient(circle, rgba(255,200,120,.3), transparent 70%)',
+          filter:'blur(100px)', opacity:.3, willChange:'transform',
+        }}/>
+      </div>
+
       {/* faint corner marks */}
       <div className="mono" style={{ position:'absolute', top:120, right:32, fontSize:11, color:'var(--fg-mute)', letterSpacing:'.08em', textTransform:'uppercase', textAlign:'right' }}>
         <div>PORTFOLIO / 2026</div>
@@ -159,58 +347,70 @@ function Hero(){
           <span style={{ width:36, height:1, background:'var(--fg-mute)' }}></span>
           <span>Fullstack Developer</span>
           <span style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'4px 10px', borderRadius:99, background:'rgba(34,197,94,.08)', color:'#86efac' }}>
-            <span style={{ width:6, height:6, borderRadius:99, background:'#22c55e', boxShadow:'0 0 10px #22c55e' }}></span>
+            <span style={{ position:'relative', display:'inline-flex', width:6, height:6 }}>
+              <span style={{ position:'absolute', inset:0, borderRadius:'50%', background:'#22c55e', animation:'pulse-ring 2.4s ease-out infinite' }}></span>
+              <span style={{ position:'relative', width:6, height:6, borderRadius:'50%', background:'#22c55e', boxShadow:'0 0 10px #22c55e' }}></span>
+            </span>
             Disponível p/ projetos
           </span>
         </div>
 
         {/* Massive headline */}
-        <h1 style={{
-          fontSize:'clamp(56px, 9.2vw, 132px)', lineHeight:.92, letterSpacing:'-.045em',
+        <h1 id="heroH1" style={{
+          fontSize:'clamp(72px, 11vw, 168px)', lineHeight:.88, letterSpacing:'-.048em',
           fontWeight:700, color:'var(--fg)',
-          maxWidth:'14ch'
         }}>
-          {heroWords.map((w,i)=>(
-            <span key={i} style={{
-              display:'inline-block', marginRight:'.22em',
-              opacity: i < revealed ? 1 : 0,
-              transform: i < revealed ? 'translateY(0)' : 'translateY(28px)',
-              transition: 'opacity .5s cubic-bezier(.2,.7,.2,1), transform .55s cubic-bezier(.2,.7,.2,1)',
-              color: w==='preciso' ? 'var(--accent)' : 'inherit',
-              fontStyle: w==='preciso' ? 'italic' : 'normal',
-              fontWeight: w==='preciso' ? 600 : 700,
-            }}>
-              {w}
-              {w==='preciso' && (
-                <span style={{
-                  display:'inline-block', width:'.08em', height:'.85em',
-                  background:'var(--accent)', marginLeft:'.06em',
-                  verticalAlign:'baseline', transform:'translateY(.08em)',
-                  opacity: showCursor ? 1 : 0, transition:'opacity .12s',
-                  boxShadow:'0 0 18px var(--accent)'
-                }}></span>
-              )}
+          {[['Construo'],['produtos','digitais'],['com','código','preciso.']].map((line,li)=>(
+            <span key={li} className="hero-line">
+              {line.map((w,wi)=>{
+                const idx = li===0?wi:li===1?1+wi:3+wi;
+                const isAmber = w==='preciso.';
+                return (
+                  <span key={wi} className="hero-word" style={{
+                    marginRight:'.2em',
+                    transform: idx < revealed ? 'translateY(0)' : 'translateY(110%)',
+                    opacity: idx < revealed ? 1 : 0,
+                    transition: `transform .9s cubic-bezier(.22,.61,.36,1) ${idx*.08}s, opacity .9s ease ${idx*.08}s`,
+                    color: isAmber ? 'var(--accent)' : 'inherit',
+                    fontStyle: isAmber ? 'italic' : 'normal',
+                  }}>
+                    {w}
+                    {isAmber && (
+                      <span style={{
+                        display:'inline-block', width:'.07em', height:'.82em',
+                        background:'var(--accent)', marginLeft:'.05em',
+                        verticalAlign:'baseline', transform:'translateY(.1em)',
+                        opacity: showCursor ? 1 : 0, transition:'opacity .12s',
+                        boxShadow:'0 0 18px var(--accent)'
+                      }}/>
+                    )}
+                  </span>
+                );
+              })}
             </span>
           ))}
         </h1>
 
         {/* sub */}
-        <div className="reveal d3" style={{
-          marginTop:64, display:'grid', gridTemplateColumns:'1fr auto', gap:48, alignItems:'end',
-        }}>
-          <p style={{ fontSize:'clamp(16px, 1.3vw, 19px)', color:'var(--fg-dim)', maxWidth:'48ch', lineHeight:1.55 }}>
-            Engenheiro fullstack apaixonado por transformar ideias em produtos que funcionam de verdade — da interface ao banco de dados. Trabalho com startups em fase inicial que precisam de produto, não de PowerPoint.
+        <div className="hero-sub reveal d3" style={{ marginTop:56 }}>
+          <p style={{ fontSize:'clamp(15px, 1.2vw, 18px)', color:'var(--fg-dim)', maxWidth:'46ch', lineHeight:1.6, marginBottom:48 }}>
+            Engenheiro fullstack que transforma ideias em produtos reais — da interface ao banco de dados. Trabalho com startups que precisam de produto, não de PowerPoint.
           </p>
-          <div className="mono" style={{ textAlign:'right', fontSize:12, color:'var(--fg-mute)', letterSpacing:'.08em' }}>
-            <div>↓ ROLAR</div>
-          </div>
         </div>
       </div>
 
-      {/* horizontal rule footer */}
-      <div style={{ maxWidth:1440, margin:'80px auto 0', width:'100%', borderTop:'1px solid var(--line)', paddingTop:24, display:'flex', justifyContent:'space-between' }} className="mono">
-        <span style={{ fontSize:11, color:'var(--fg-mute)', letterSpacing:'.1em', textTransform:'uppercase' }}>v.2026.05 · build estável</span>
-        <span style={{ fontSize:11, color:'var(--fg-mute)', letterSpacing:'.1em', textTransform:'uppercase' }}>06 seções · uma história</span>
+      {/* hero-bottom metadata row */}
+      <div style={{ maxWidth:1440, margin:'0 auto', width:'100%', borderTop:'1px solid var(--line)', paddingTop:28, display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:32 }}>
+        {[
+          ['[ ROLE ]','Senior Fullstack Engineer\nReact · Next.js · Node · Spring Boot'],
+          ['[ FOCO ]','Interfaces editoriais, SaaS B2B,\nplataformas de IA e automação'],
+          ['[ STATUS ]','Aceitando projetos\npara Q3—Q4 2026'],
+        ].map(([k,v])=>(
+          <div key={k} className="mono" style={{ fontSize:11 }}>
+            <span style={{ display:'block', color:'var(--accent)', letterSpacing:'.16em', marginBottom:8, fontSize:10 }}>{k}</span>
+            <span style={{ color:'var(--fg)', fontSize:12, letterSpacing:'.1em', lineHeight:1.7, whiteSpace:'pre-line' }}>{v}</span>
+          </div>
+        ))}
       </div>
     </section>
   );
@@ -237,7 +437,7 @@ function About(){
     <section id="about" ref={ref} style={{ padding:'180px 32px 160px', position:'relative' }}>
       <div style={{ maxWidth:1440, margin:'0 auto' }}>
         {/* Section label */}
-        <SectionLabel num="01" label="Sobre" />
+        <SectionLabel num="01" label="Sobre" aside="BIOGRAFIA · 2026" />
 
         <div style={{ display:'grid', gridTemplateColumns:'1.2fr 1fr', gap:'min(10vw, 140px)', marginTop:80, alignItems:'start' }}>
           {/* Left: bold quote + photo */}
@@ -323,10 +523,10 @@ function Services(){
   return (
     <section id="services" style={{ padding:'160px 32px 160px', background:'var(--bg-2)', borderTop:'1px solid var(--line)', borderBottom:'1px solid var(--line)' }}>
       <div style={{ maxWidth:1440, margin:'0 auto' }}>
-        <SectionLabel num="02" label="Serviços" />
+        <SectionLabel num="02" label="Serviços" aside="O QUE EU FAÇO" />
 
         <div className="reveal" style={{ marginTop:48, display:'grid', gridTemplateColumns:'1.2fr 1fr', gap:64, alignItems:'end', marginBottom:80 }}>
-          <h2 style={{ fontSize:'clamp(40px, 5.2vw, 72px)', lineHeight:1, letterSpacing:'-.04em', fontWeight:600 }}>
+          <h2 className="gsap-title" style={{ fontSize:'clamp(40px, 5.2vw, 72px)', lineHeight:1, letterSpacing:'-.04em', fontWeight:600 }}>
             O que entrego, em <span style={{ color:'var(--accent)' }}>três</span> formatos.
           </h2>
           <p style={{ fontSize:16, lineHeight:1.6, color:'var(--fg-dim)', maxWidth:'42ch' }}>
@@ -594,10 +794,10 @@ function Projects(){
       {active && <ProjectModal project={active} onClose={()=>setActive(null)} />}
 
       <div style={{ maxWidth:1440, margin:'0 auto' }}>
-        <SectionLabel num="03" label="Projetos selecionados" />
+        <SectionLabel num="03" label="Projetos selecionados" aside="SELECTED WORK · 2024—2026" />
 
         <div className="reveal" style={{ marginTop:48, display:'grid', gridTemplateColumns:'1fr auto', gap:32, alignItems:'end', marginBottom:64 }}>
-          <h2 style={{ fontSize:'clamp(40px, 5.2vw, 72px)', lineHeight:1, letterSpacing:'-.04em', fontWeight:600, maxWidth:'12ch' }}>
+          <h2 className="gsap-title" style={{ fontSize:'clamp(40px, 5.2vw, 72px)', lineHeight:1, letterSpacing:'-.04em', fontWeight:600, maxWidth:'12ch' }}>
             Um recorte do que construí.
           </h2>
           <a href="https://github.com/uriartegui" target="_blank" rel="noopener noreferrer"
@@ -640,7 +840,7 @@ function Projects(){
             title="Cozinhei" subtitle="App de receitas geradas por IA a partir dos ingredientes disponíveis"
             link="https://github.com/uriartegui/cozinhei"
             demo={window.CozinheiDemo}
-            slot="cozinhei"
+            slot="cozinhei" artOverride="card-art-2"
             preview="img/cozinhei.svg"
             arch="Next.js App Router → Anthropic claude-opus-4-5 (streaming) → structured output parser"
             features={[
@@ -707,7 +907,7 @@ function Projects(){
             year="2025" stack="Python · FastAPI · Groq · Evolution API"
             title="Agente de Locação IA" subtitle="Sistema white-label de atendimento via WhatsApp para locadoras de equipamentos"
             desc="Automatiza orçamento, coleta de dados e confirmação de pedidos direto no WhatsApp. Pronto para qualquer locadora — configurável por catálogo, sem desenvolvimento extra."
-            slot="tanako" preview="img/tanako.svg"
+            slot="tanako" artOverride="card-art-6" preview="img/tanako.svg"
             demo={window.AgentLocacaoDemo}
             arch="FastAPI → Groq llama-3.3-70b (tool calling) → Evolution API (WhatsApp) · sessões persistidas em JSON"
             features={[
@@ -725,7 +925,7 @@ function Projects(){
             year="2026" stack="React 18 · Vite · Tailwind CSS · Framer Motion · Vercel"
             title="Hominum Saúde" subtitle="Site institucional para distribuidora de equipamentos médico-hospitalares"
             desc="Modernização completa do site — todas as páginas funcionando, catálogo de 8 marcas, seções de serviços, mapa de localização e formulário de contato. Projeto real, entregue via pitch presencial."
-            slot="hominum"
+            slot="hominum" artOverride="card-art-5"
             link="https://hominum-site.vercel.app"
             linkLabel="Ver site ao vivo →"
             iframeUrl="https://hominum-site.vercel.app"
@@ -745,8 +945,14 @@ function Projects(){
   );
 }
 
-function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, features, arch, featured, slot, preview, demo, link, linkLabel, iframeUrl, onOpen }){
+const CARD_ARTS = { amber:'card-art-1', 'amber-dim':'card-art-4', ink:'card-art-6', warm:'card-art-3' };
+
+function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, features, arch, featured, slot, preview, demo, link, linkLabel, iframeUrl, onOpen, artOverride }){
   const [hover,setHover] = useState(false);
+  const cardRef = useRef(null);
+  const rafRef = useRef(null);
+  const tiltRef = useRef({ rx:0, ry:0, tx:0, ty:0 });
+
   const tones = {
     'amber':       { bg:'#1F1408', border:'#3a2310', accent:'var(--accent)' },
     'amber-dim':   { bg:'#191210', border:'#2c1f17', accent:'#FB923C' },
@@ -754,25 +960,60 @@ function ProjectCard({ span, rows, tone, year, stack, title, subtitle, desc, fea
     'warm':        { bg:'#181513', border:'#27221e', accent:'#E8B57A' },
   };
   const c = tones[tone] || tones.ink;
+  const artClass = artOverride || CARD_ARTS[tone] || 'card-art-2';
 
   const handleClick = ()=>{
     if(onOpen) onOpen({ tone, year, stack, title, subtitle, desc, features, arch, slot, preview, demo, link, linkLabel, iframeUrl });
   };
 
+  const lerpLoop = ()=>{
+    const t = tiltRef.current;
+    t.rx += (t.ty - t.rx) * 0.14;
+    t.ry += (t.tx - t.ry) * 0.14;
+    if(cardRef.current)
+      cardRef.current.style.transform = `perspective(900px) rotateX(${t.rx}deg) rotateY(${t.ry}deg) translateZ(${hover?8:0}px)`;
+    if(Math.abs(t.rx-t.ty)>0.01 || Math.abs(t.ry-t.tx)>0.01)
+      rafRef.current = requestAnimationFrame(lerpLoop);
+    else rafRef.current = null;
+  };
+
+  const onMouseMove = (e)=>{
+    if(document.body.classList.contains('no-motion')) return;
+    const el = cardRef.current; if(!el) return;
+    const r = el.getBoundingClientRect();
+    const nx = (e.clientX - r.left) / r.width  - 0.5;
+    const ny = (e.clientY - r.top)  / r.height - 0.5;
+    tiltRef.current.tx = nx * -10;
+    tiltRef.current.ty = ny * 10;
+    if(!rafRef.current) rafRef.current = requestAnimationFrame(lerpLoop);
+  };
+
+  const onMouseLeave = ()=>{
+    setHover(false);
+    tiltRef.current.tx = 0; tiltRef.current.ty = 0;
+    if(!rafRef.current) rafRef.current = requestAnimationFrame(lerpLoop);
+  };
+
+  useEffect(()=>()=>{ if(rafRef.current) cancelAnimationFrame(rafRef.current); },[]);
+
   return (
-    <article className="reveal"
-      onMouseEnter={()=>setHover(true)} onMouseLeave={()=>setHover(false)}
+    <article ref={cardRef} className="reveal"
+      onMouseEnter={()=>setHover(true)}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
       onClick={handleClick}
       style={{
         gridColumn: span, gridRow: rows,
-        background: c.bg, border:`1px solid ${c.border}`,
+        background: c.bg, border:`1px solid ${hover ? 'rgba(237,234,227,.18)' : c.border}`,
         borderRadius:18, padding: featured ? '36px' : '28px',
         position:'relative', overflow:'hidden',
         display:'flex', flexDirection:'column', justifyContent:'space-between',
-        transform: hover ? 'translateY(-3px) scale(1.005)' : 'none',
-        transition:'transform .45s cubic-bezier(.2,.7,.2,1), border-color .3s, background .3s',
+        transformStyle:'preserve-3d', willChange:'transform',
+        transition:'border-color .3s',
         cursor: onOpen ? 'pointer' : 'default',
       }}>
+      {/* CSS art background */}
+      <div className={artClass} aria-hidden="true"/>
 
       {/* meta row */}
       <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', position:'relative', zIndex:2 }}>
@@ -858,10 +1099,10 @@ function Skills(){
   return (
     <section id="skills" style={{ padding:'180px 32px 160px', background:'var(--bg-2)', borderTop:'1px solid var(--line)', borderBottom:'1px solid var(--line)' }}>
       <div style={{ maxWidth:1440, margin:'0 auto' }}>
-        <SectionLabel num="04" label="Stack técnica" />
+        <SectionLabel num="04" label="Stack técnica" aside="FERRAMENTAS · 2026" />
 
         <div className="reveal" style={{ marginTop:48, display:'grid', gridTemplateColumns:'1fr auto', gap:32, alignItems:'end', marginBottom:80 }}>
-          <h2 style={{ fontSize:'clamp(40px, 5.2vw, 72px)', lineHeight:1, letterSpacing:'-.04em', fontWeight:600, maxWidth:'14ch' }}>
+          <h2 className="gsap-title" style={{ fontSize:'clamp(40px, 5.2vw, 72px)', lineHeight:1, letterSpacing:'-.04em', fontWeight:600, maxWidth:'14ch' }}>
             Ferramentas que uso quase todos os dias.
           </h2>
           <p className="mono" style={{ fontSize:12, color:'var(--fg-mute)', letterSpacing:'.08em', textTransform:'uppercase', textAlign:'right' }}>
@@ -982,7 +1223,7 @@ function Contact({ formRef }){
   return (
     <section id="contact" ref={formRef} style={{ padding:'200px 32px 120px', position:'relative' }}>
       <div style={{ maxWidth:1440, margin:'0 auto' }}>
-        <SectionLabel num="05" label="Contato" />
+        <SectionLabel num="05" label="Contato" aside="VAMOS CONVERSAR" />
 
         <h2 className="reveal" style={{
           marginTop:64, fontSize:'clamp(56px, 11vw, 168px)', lineHeight:.92,
@@ -1145,14 +1386,32 @@ function Footer(){
 }
 
 /* ---------- helpers ---------- */
-function SectionLabel({ num, label }){
+function SectionLabel({ num, label, aside }){
+  const barRef = useRef(null);
+  useEffect(()=>{
+    if(!barRef.current) return;
+    const io = new IntersectionObserver(([e])=>{
+      if(e.isIntersecting){
+        if(typeof gsap !== 'undefined')
+          gsap.to(barRef.current,{ scaleX:1, duration:1.4, ease:'expo.out' });
+        else
+          barRef.current.style.transform = 'scaleX(1)';
+        io.disconnect();
+      }
+    },{ threshold:.5 });
+    io.observe(barRef.current);
+    return ()=> io.disconnect();
+  },[]);
+
   return (
-    <div className="reveal" style={{ display:'flex', alignItems:'center', gap:14, color:'var(--fg-mute)' }}>
-      <span className="mono" style={{ fontSize:11, letterSpacing:'.16em', color:'var(--accent)' }}>—— {num}</span>
-      <span className="mono" style={{ fontSize:11, letterSpacing:'.16em', textTransform:'uppercase' }}>{label}</span>
+    <div className="gsap-label" style={{ display:'flex', alignItems:'baseline', gap:18, color:'var(--fg-mute)', marginBottom:60 }}>
+      <span className="mono" style={{ fontSize:11, letterSpacing:'.22em', textTransform:'uppercase', color:'var(--accent)' }}>[ {num} ]</span>
+      <span className="mono" style={{ fontSize:11, letterSpacing:'.22em', textTransform:'uppercase' }}>{label}</span>
+      <span ref={barRef} className="section-bar" style={{ transition:'transform 1.4s cubic-bezier(.22,.61,.36,1)' }}/>
+      {aside && <span className="mono" style={{ fontSize:11, letterSpacing:'.16em', textTransform:'uppercase', color:'var(--fg-mute)' }}>{aside}</span>}
     </div>
   );
 }
 
 /* expose to global */
-Object.assign(window, { Nav, Hero, About, Services, Projects, Skills, Contact, Footer, useReveal });
+Object.assign(window, { Nav, Hero, About, Services, Projects, Skills, Contact, Footer, Marquee, useReveal });
