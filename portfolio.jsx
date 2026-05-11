@@ -977,7 +977,7 @@ function Projects(){
             onOpen={setActive}
           />
           <ProjectCard
-            span="span 6" rows="span 1"
+            span="span 3" rows="span 1"
             tone="amber"
             year="2025" stack="HTML · CSS · JavaScript · Vercel"
             title="Buollo" subtitle="Site de confeitaria artesanal — Florianópolis, SC"
@@ -992,6 +992,24 @@ function Projects(){
               'Formulário de pedido com validação nativa e redirecionamento WhatsApp',
               'Navbar com scroll-aware transparência e comportamento sticky',
               'Seção de depoimentos de clientes com layout de cards responsivo',
+            ]}
+            onOpen={setActive}
+          />
+          <ProjectCard
+            span="span 3" rows="span 1"
+            tone="ink"
+            year="2026" stack="HTML · CSS · JavaScript · Vercel"
+            title="DJ Piriquita" subtitle="Site artístico para DJ brasileiro — Open Format, Funk, House, Mandelão"
+            desc="Presença digital completa para DJ Piriquita: player Spotify-style com cards 3D, galeria com lightbox, equalizer animado e integração com Spotify, SoundCloud e YouTube. Artista com 1.4M+ streams."
+            link="https://github.com/uriartegui/piriquita"
+            linkLabel="Ver no GitHub →"
+            arch="HTML · CSS · Vanilla JS → Vercel (static deploy)"
+            features={[
+              'Player de música Spotify-style com cards 3D, scrubber e controles de navegação',
+              'Equalizer animado no hero sincronizado com a identidade visual do artista',
+              'Galeria com lightbox, wipe animations e IntersectionObserver para reveal',
+              'Preloader animado com barra de progresso e transição suave para o conteúdo',
+              'Integrações diretas com Spotify, SoundCloud, YouTube e Instagram @agency.hey',
             ]}
             onOpen={setActive}
           />
