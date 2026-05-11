@@ -806,13 +806,13 @@ function Projects(){
           </a>
         </div>
 
-        {/* Bento grid */}
-        <div style={{
-          display:'grid',
-          gridTemplateColumns:'repeat(6, 1fr)',
-          gridAutoRows:'minmax(200px, auto)',
-          gap:16,
-        }}>
+        {/* ── Produtos SaaS ── */}
+        <div className="reveal" style={{ marginBottom:14 }}>
+          <span className="mono" style={{ fontSize:11, letterSpacing:'.1em', textTransform:'uppercase', color:'var(--fg-dim)' }}>
+            01 — Produtos SaaS
+          </span>
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(6, 1fr)', gridAutoRows:'minmax(200px, auto)', gap:16, marginBottom:56 }}>
           <ProjectCard
             span="span 4 / span 4" rows="span 2"
             tone="amber" featured
@@ -835,40 +835,6 @@ function Projects(){
           />
           <ProjectCard
             span="span 2" rows="span 1"
-            tone="ink"
-            year="2025" stack="Next.js · Anthropic API"
-            title="Cozinhei" subtitle="App de receitas geradas por IA a partir dos ingredientes disponíveis"
-            link="https://github.com/uriartegui/cozinhei"
-            demo={window.CozinheiDemo}
-            slot="cozinhei" artOverride="card-art-2"
-            preview="img/cozinhei.svg"
-            arch="Next.js App Router → Anthropic claude-opus-4-5 (streaming) → structured output parser"
-            features={[
-              'Streaming token a token — resposta aparece em tempo real, sem tela de espera',
-              'Prompt estruturado com restrições dietéticas, porções e preferências do usuário',
-              'Parser de markdown para exibir ingredientes e modo de preparo formatados',
-              'Rate limiting por sessão para controle de custos de API',
-            ]}
-            onOpen={setActive}
-          />
-          <ProjectCard
-            span="span 2" rows="span 1"
-            tone="warm"
-            year="2025" stack="React Native · Expo · Supabase"
-            title="FinFlow" subtitle="App de controle financeiro pessoal com sync em tempo real"
-            slot="finflow" preview="img/finflow.svg"
-            demo={window.FinFlowDemo}
-            arch="React Native · Expo Router → Supabase Realtime → PostgreSQL (RLS)"
-            features={[
-              'Sincronização em tempo real com Supabase Realtime channels — sem pull manual',
-              'Persistência offline-first com fila de retry automático ao reconectar',
-              'Categorização automática de transações por análise de padrões de nome',
-              'Relatórios mensais calculados via SQL functions no banco — sem processamento no cliente',
-            ]}
-            onOpen={setActive}
-          />
-          <ProjectCard
-            span="span 3" rows="span 1"
             tone="amber-dim"
             year="2025" stack="Next.js · PostgreSQL · Vercel"
             title="Kanva" subtitle="Kanban board para times pequenos"
@@ -885,7 +851,7 @@ function Projects(){
             onOpen={setActive}
           />
           <ProjectCard
-            span="span 3" rows="span 1"
+            span="span 2" rows="span 1"
             tone="warm"
             year="2025" stack="Next.js · Claude API · Vercel AI SDK"
             title="PulseAI" subtitle="Editor com IA para melhorar, resumir e expandir textos"
@@ -903,6 +869,49 @@ function Projects(){
           />
           <ProjectCard
             span="span 6" rows="span 1"
+            tone="warm"
+            year="2025" stack="React Native · Expo · Supabase"
+            title="FinFlow" subtitle="App de controle financeiro pessoal com sync em tempo real"
+            slot="finflow" preview="img/finflow.svg"
+            demo={window.FinFlowDemo}
+            arch="React Native · Expo Router → Supabase Realtime → PostgreSQL (RLS)"
+            features={[
+              'Sincronização em tempo real com Supabase Realtime channels — sem pull manual',
+              'Persistência offline-first com fila de retry automático ao reconectar',
+              'Categorização automática de transações por análise de padrões de nome',
+              'Relatórios mensais calculados via SQL functions no banco — sem processamento no cliente',
+            ]}
+            onOpen={setActive}
+          />
+        </div>
+
+        {/* ── AI / Automação ── */}
+        <div className="reveal" style={{ marginBottom:14 }}>
+          <span className="mono" style={{ fontSize:11, letterSpacing:'.1em', textTransform:'uppercase', color:'var(--fg-dim)' }}>
+            02 — AI / Automação
+          </span>
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(6, 1fr)', gridAutoRows:'minmax(200px, auto)', gap:16, marginBottom:56 }}>
+          <ProjectCard
+            span="span 2" rows="span 1"
+            tone="ink"
+            year="2025" stack="Next.js · Anthropic API"
+            title="Cozinhei" subtitle="App de receitas geradas por IA a partir dos ingredientes disponíveis"
+            link="https://github.com/uriartegui/cozinhei"
+            demo={window.CozinheiDemo}
+            slot="cozinhei" artOverride="card-art-2"
+            preview="img/cozinhei.svg"
+            arch="Next.js App Router → Anthropic claude-opus-4-5 (streaming) → structured output parser"
+            features={[
+              'Streaming token a token — resposta aparece em tempo real, sem tela de espera',
+              'Prompt estruturado com restrições dietéticas, porções e preferências do usuário',
+              'Parser de markdown para exibir ingredientes e modo de preparo formatados',
+              'Rate limiting por sessão para controle de custos de API',
+            ]}
+            onOpen={setActive}
+          />
+          <ProjectCard
+            span="span 4" rows="span 1"
             tone="ink"
             year="2025" stack="Python · FastAPI · Groq · Evolution API"
             title="Agente de Locação IA" subtitle="Sistema white-label de atendimento via WhatsApp para locadoras de equipamentos"
@@ -919,8 +928,17 @@ function Projects(){
             ]}
             onOpen={setActive}
           />
+        </div>
+
+        {/* ── Sites / Cliente ── */}
+        <div className="reveal" style={{ marginBottom:14 }}>
+          <span className="mono" style={{ fontSize:11, letterSpacing:'.1em', textTransform:'uppercase', color:'var(--fg-dim)' }}>
+            03 — Sites / Cliente
+          </span>
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(6, 1fr)', gridAutoRows:'minmax(200px, auto)', gap:16 }}>
           <ProjectCard
-            span="span 6" rows="span 1"
+            span="span 4" rows="span 1"
             tone="warm"
             year="2026" stack="React 18 · Vite · Tailwind CSS · Framer Motion · Vercel"
             title="Hominum Saúde" subtitle="Site institucional para distribuidora de equipamentos médico-hospitalares"
@@ -936,6 +954,44 @@ function Projects(){
               'Seção de localização com Google Maps embed e cards de contato',
               'Animações de entrada com Framer Motion e scroll-reveal via IntersectionObserver',
               'Deploy no Vercel com vercel.json para SPA routing correto em produção',
+            ]}
+            onOpen={setActive}
+          />
+          <ProjectCard
+            span="span 2" rows="span 1"
+            tone="ink"
+            year="2025" stack="HTML · CSS · JavaScript · GSAP · Vercel"
+            title="André Zapelini" subtitle="Portfólio de engenheiro civil — 18 anos, 142+ projetos"
+            desc="Site profissional com animações de scroll avançadas, paralaxe e cursor personalizado. Projeto real entregue para engenheiro civil atuante em SC, PR e SP."
+            link="https://andre-one-beryl.vercel.app"
+            linkLabel="Ver site ao vivo →"
+            iframeUrl="https://andre-one-beryl.vercel.app"
+            arch="HTML · CSS · Vanilla JS → GSAP ScrollTrigger · Timeline → Vercel (static)"
+            features={[
+              'Animações de scroll com GSAP ScrollTrigger — timeline orquestrada por seção',
+              'Cursor personalizado com efeito de paralaxe e tracking suave',
+              'Loader animado com contador e reveal progressivo do conteúdo',
+              'Contadores de estatísticas animados: 18 anos, 142+ projetos, 48k m² projetados',
+              'Formulário de contato com integração WhatsApp direto pelo site',
+            ]}
+            onOpen={setActive}
+          />
+          <ProjectCard
+            span="span 6" rows="span 1"
+            tone="amber"
+            year="2025" stack="HTML · CSS · JavaScript · Vercel"
+            title="Buollo" subtitle="Site de confeitaria artesanal — Florianópolis, SC"
+            desc="Site institucional para Buollo Doces Finos — bundt cakes, docinhos finos e bolos artísticos. Carrossel de receitas, galeria de produtos e formulário de pedidos. Projeto real entregue."
+            link="https://buollo.vercel.app"
+            linkLabel="Ver site ao vivo →"
+            iframeUrl="https://buollo.vercel.app"
+            arch="HTML · CSS · Vanilla JS → Vercel (static deploy)"
+            features={[
+              'Carrossel de receitas e inspirações com navegação por setas e swipe',
+              'Galeria de 3 linhas de produtos com hover reveal e descrição',
+              'Formulário de pedido com validação nativa e redirecionamento WhatsApp',
+              'Navbar com scroll-aware transparência e comportamento sticky',
+              'Seção de depoimentos de clientes com layout de cards responsivo',
             ]}
             onOpen={setActive}
           />
