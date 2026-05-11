@@ -1001,8 +1001,9 @@ function Projects(){
             year="2026" stack="HTML · CSS · JavaScript · Vercel"
             title="DJ Piriquita" subtitle="Site artístico para DJ brasileiro — Open Format, Funk, House, Mandelão"
             desc="Presença digital completa para DJ Piriquita: player Spotify-style com cards 3D, galeria com lightbox, equalizer animado e integração com Spotify, SoundCloud e YouTube. Artista com 1.4M+ streams."
-            link="https://github.com/uriartegui/piriquita"
-            linkLabel="Ver no GitHub →"
+            link="https://piriquita.vercel.app"
+            linkLabel="Ver site ao vivo →"
+            iframeUrl="https://piriquita.vercel.app"
             arch="HTML · CSS · Vanilla JS → Vercel (static deploy)"
             features={[
               'Player de música Spotify-style com cards 3D, scrubber e controles de navegação',
